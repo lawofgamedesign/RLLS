@@ -16,13 +16,13 @@ public class InputManager
     /////////////////////////////////////////////
 
 
-
+    //each frame, send out an event with the current state of the mouse
     public virtual void Tick()
     {
         lastFramePos = thisFramePos;
 
         thisFramePos = Input.mousePosition;
 
-        Services.Events.Fire(new MouseEvent(thisFramePos, thisFramePos - lastFramePos));
+        Services.Events.Fire(new MouseEvent(thisFramePos, thisFramePos - lastFramePos, Input.GetMouseButton(0), Input.GetMouseButton(1)));
     }
 }
