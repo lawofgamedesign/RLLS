@@ -12,4 +12,16 @@ public static class Services
         }
         set { inputs = value; }
     }
+
+
+    private static EventManager events;
+    public static EventManager Events
+    {
+        get
+        {
+            Debug.Assert(events != null, "No event manager.");
+            return events;
+        }
+        set { events = value; }
+    }
 }
