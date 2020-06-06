@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour {
         GameObject.Find(P1_HANDS).GetComponent<HandControl>().Setup();
     }
 
-    // Update is called once per frame
+    //the only Update() permitted in the game! This calls everything that needs to act each frame.
+    //Other scripts are permitted to *re*act through subscribing to events, etc.
     private void Update()
     {
         Services.Inputs.Tick();
