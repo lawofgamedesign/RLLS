@@ -3,7 +3,7 @@
 public class GameManager : MonoBehaviour {
 
 
-    private const string P1_HANDS = "Player 1 hands";
+    private const string P1_HANDS = "Player 1";
 
 
 

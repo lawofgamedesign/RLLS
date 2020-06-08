@@ -23,6 +23,7 @@ public class HandControl : MonoBehaviour
     Quaternion deltaRotation;
     private const float BASE_ROT_SPEED = 50.0f; //starting wrist rotation speed
     private Vector3 baseRotation = new Vector3(0.0f, 0.0f, BASE_ROT_SPEED);
+    private Vector3 baseSwing = new Vector3(BASE_ROT_SPEED, 0.0f, 0.0f);
 
     /////////////////////////////////////////////
     /// Fields
@@ -89,8 +90,14 @@ public class HandControl : MonoBehaviour
 
         MouseEvent mouseEvent = e as MouseEvent;
 
+        //swing if both buttons are pressed
+        if (mouseEvent.LMB && mouseEvent.RMB)
+        {
+            deltaRotation = Quaternion.Euler(baseSwing * Time.deltaTime);
+            rb.MoveRotation(rb.rotation * deltaRotation);
+        }
         //rotate hands if either LMB or RMB is pressed
-        if (mouseEvent.LMB || mouseEvent.RMB)
+        else if (mouseEvent.LMB || mouseEvent.RMB)
         {
 
             //set the amount of rotation for this frame
