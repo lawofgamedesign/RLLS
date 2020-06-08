@@ -12,30 +12,31 @@ public class InputManager
     private bool leftPressed;
     private bool rightPressed;
     private Directions currentDir;
-    
+
 
     private Vector3 lastFramePos = new Vector3(0.0f, 0.0f);
     private Vector3 thisFramePos = new Vector3(0.0f, 0.0f);
-    
+
 
 
 
     /////////////////////////////////////////////
     /// Functions
     /////////////////////////////////////////////
-    
+
     ///Each frame, check for keyboard and mouse inputs
     public virtual void Tick()
     {
         GetDirection();
+        CheckBothMouseButtons();
         GetMouseState();
     }
 
 
-/// <summary>
-/// Sends an event if the player is pressing a direction key
-/// </summary>
-   public virtual void GetDirection()
+    /// <summary>
+    /// Sends an event if the player is pressing a direction key
+    /// </summary>
+    protected virtual void GetDirection()
     {
         //reset states
         currentDir = Directions.None;
@@ -63,15 +64,23 @@ public class InputManager
         if (currentDir != Directions.None) Services.Events.Fire(new KeyDirectionEvent(currentDir));
     }
 
-/// <summary>
-/// Sends an event with how the mouse has moved, and which buttons--if any--are pressed.
-/// </summary>
-    public virtual void GetMouseState()
+    /// <summary>
+    /// Sends an event with how the mouse has moved, and which buttons--if any--are pressed.
+    /// </summary>
+    protected virtual void GetMouseState()
     {
         lastFramePos = thisFramePos;
 
         thisFramePos = Input.mousePosition;
 
         Services.Events.Fire(new MouseEvent(thisFramePos, thisFramePos - lastFramePos, Input.GetMouseButton(0), Input.GetMouseButton(1)));
+    }
+
+    /// <summary>
+    /// If both mouse buttons are pressed (because either one is detected as *just* pressed while the other *is* pressed, to allow for non-frame-perfect inputs), send out an appropriate event.
+    /// </summary>
+    protected void CheckBothMouseButtons()
+    {
+        if ((Input.GetMouseButtonDown(0) && Input.GetMouseButton(1)) || Input.GetMouseButton(0) && Input.GetMouseButtonDown(1)) Services.Events.Fire(new BothMouseButtonsEvent());
     }
 }
