@@ -8,8 +8,13 @@ public class HandControl : MonoBehaviour
     /////////////////////////////////////////////
 
 
-    //the rigidbody for the hands
+    //the rigidbody for the player
     private Rigidbody rb;
+
+
+    //the transform for the player's hands; used to determine how far they can move
+    private Transform handTransform;
+    private const string HANDS_TRANSFORM = "Hands";
 
 
     //hand movement
@@ -40,6 +45,7 @@ public class HandControl : MonoBehaviour
         Services.Events.Register<KeyDirectionEvent>(MoveHands);
         Services.Events.Register<MouseEvent>(RotateHands);
         rb = GetComponent<Rigidbody>();
+        handTransform = transform.Find(HANDS_TRANSFORM);
         newLoc = Input.mousePosition; //avoid a "jump" on the first frame of movement
         currentState = SwordState.Guard;
     }
@@ -138,12 +144,24 @@ public class HandControl : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Decide whether the player is swinging the sword, or returning to guard.
+    /// 
+    /// When a BothMouseButtonsEvent is detected, switch between those states.
+    /// </summary>
+    /// <param name="e">A BothMouseButtonsEvent.</param>
     private void DetermineState(global::Event e)
     {
         Debug.Assert(e.GetType() == typeof(BothMouseButtonsEvent), "Non-BothMouseButtonsEvent in DetermineState().");
 
         if (currentState == SwordState.Swinging) currentState = SwordState.Returning;
         else if (currentState == SwordState.Returning || currentState == SwordState.Guard) currentState = SwordState.Swinging;
+    }
+
+
+    private bool CheckBounds(InputManager.Directions direction)
+    {
+        return true;
     }
 }
 
