@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     {
         Services.Events = new EventManager();
         Services.Inputs = new InputManager();
+        Services.Tasks = new TaskManager();
         GameObject.Find(P1_HANDS).GetComponent<HandControl>().Setup();
         GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<HandControl>().Setup();
     }
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour {
     private void Update()
     {
         Services.Inputs.Tick();
+        Services.Tasks.Tick();
         GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<Opponent.TrainingDummyBehavior>().Tick();
     }
 }

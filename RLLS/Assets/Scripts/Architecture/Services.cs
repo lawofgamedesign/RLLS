@@ -24,4 +24,16 @@ public static class Services
         }
         set { events = value; }
     }
+
+
+    private static TaskManager tasks;
+    public static TaskManager Tasks
+    {
+        get
+        {
+            Debug.Assert(tasks != null, "No task manager.");
+            return tasks;
+        }
+        set { tasks = value; }
+    }
 }
