@@ -8,34 +8,9 @@ public class HandControl : Person
     /////////////////////////////////////////////
 
 
-    //the rigidbody for the player
-    protected Rigidbody rb;
-
-
-    //the transform for the player's hands; used to determine how far they can move
-    protected Transform handTransform;
-    protected const string HANDS_TRANSFORM = "Hands";
-
-
-    //hand movement
-    protected Vector3 prevLoc = new Vector3(0.0f, 0.0f, 0.0f);
-    protected Vector3 newLoc = new Vector3(0.0f, 0.0f, 0.0f);
-    protected Vector3 delta;
-    protected float moveSpeed = 10.0f;
-
-
-    //hand rotation
-    protected Quaternion deltaRotation;
-    protected const float BASE_ROT_SPEED = 50.0f; //starting wrist rotation speed
-    protected Vector3 baseRotation = new Vector3(0.0f, 0.0f, BASE_ROT_SPEED);
-    protected Vector3 baseSwing = new Vector3(BASE_ROT_SPEED, 0.0f, 0.0f);
-    protected Vector3 currentSwingVector = new Vector3(0.0f, 0.0f, 0.0f);
-    protected enum SwordState { Swinging, Returning, Guard }
-    protected SwordState currentState;
-
-
     //the player's sword
     protected const string PLAYER_SWORD = "Player 1 sword";
+
 
     /////////////////////////////////////////////
     /// Fields
@@ -45,19 +20,19 @@ public class HandControl : Person
     //register for mouse events and get the rigidbody so as to be able to respond to them
     public override void Setup()
     {
-        Services.Events.Register<BothMouseButtonsEvent>(DetermineState);
-        Services.Events.Register<KeyDirectionEvent>(MoveHands);
-        Services.Events.Register<MouseEvent>(RotateHands);
+        Services.Events.Register<BothMouseButtonsEvent>(SwordStateViaInput);
+        Services.Events.Register<KeyDirectionEvent>(MoveHandsViaInput);
+        Services.Events.Register<MouseEvent>(RotateHandsViaInput);
         rb = GetComponent<Rigidbody>();
         handTransform = transform.Find(HANDS_TRANSFORM);
-        newLoc = Input.mousePosition; //avoid a "jump" on the first frame of movement
         currentState = SwordState.Guard;
         transform.Find(PLAYER_SWORD).GetComponent<SwordBehavior>().Setup();
     }
 
 
+
     //move hands based on player input
-    protected virtual void MoveHands(global::Event e)
+    protected virtual void MoveHandsViaInput(global::Event e)
     {
         Debug.Assert(e.GetType() == typeof(KeyDirectionEvent), "Non-KeyDirectionEvent in MoveHands.");
 
@@ -100,7 +75,8 @@ public class HandControl : Person
     }
 
 
-    protected virtual void RotateHands(global::Event e)
+
+    protected virtual void RotateHandsViaInput(global::Event e)
     {
         Debug.Assert(e.GetType() == typeof(MouseEvent), "Non-MouseEvent in MoveHands.");
 
@@ -126,19 +102,6 @@ public class HandControl : Person
         }
     }
 
-    /// <summary>
-    /// Find the new rotation of the hands as they swing or return.
-    /// </summary>
-    /// <returns>The new rotation, as a quaternion</returns>
-    protected virtual Quaternion SwingOrReturn()
-    {
-        if (currentState == SwordState.Swinging) currentSwingVector = baseSwing;
-        else if (currentState == SwordState.Returning) currentSwingVector = -1 * baseSwing;
-        else Debug.Log("Incorrect SwordState in SwingOrReturn() " + currentState.ToString());
-
-        deltaRotation = Quaternion.Euler(currentSwingVector * Time.deltaTime);
-        return rb.rotation * deltaRotation;
-    }
 
 
     /// <summary>
@@ -147,9 +110,9 @@ public class HandControl : Person
     /// When a BothMouseButtonsEvent is detected, switch between those states.
     /// </summary>
     /// <param name="e">A BothMouseButtonsEvent.</param>
-    protected virtual void DetermineState(global::Event e)
+    protected virtual void SwordStateViaInput(global::Event e)
     {
-        Debug.Assert(e.GetType() == typeof(BothMouseButtonsEvent), "Non-BothMouseButtonsEvent in DetermineState().");
+        Debug.Assert(e.GetType() == typeof(BothMouseButtonsEvent), "Non-BothMouseButtonsEvent in SwordStateViaInput().");
 
         if (currentState == SwordState.Swinging) currentState = SwordState.Returning;
         else if (currentState == SwordState.Returning || currentState == SwordState.Guard) currentState = SwordState.Swinging;
