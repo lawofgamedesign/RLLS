@@ -36,4 +36,16 @@ public static class Services
         }
         set { tasks = value; }
     }
+
+
+    private static OpponentStances stance;
+    public static OpponentStances Stance
+    {
+        get
+        {
+            Debug.Assert(stance != null, "No stance list.");
+            return stance;
+        }
+        set { stance = value; }
+    }
 }
