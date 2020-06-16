@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
         Services.Events = new EventManager();
         Services.Inputs = new InputManager();
         Services.Tasks = new TaskManager();
-        GameObject.Find(P1_HANDS).GetComponent<HandControl>().Setup();
+        GameObject.Find(P1_HANDS).GetComponent<Person>().Setup();
         GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<HandControl>().Setup();
     }
 

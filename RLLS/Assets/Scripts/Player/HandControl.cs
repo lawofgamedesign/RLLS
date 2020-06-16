@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class HandControl : MonoBehaviour
+public class HandControl : Person
 {
 
     /////////////////////////////////////////////
@@ -33,13 +33,17 @@ public class HandControl : MonoBehaviour
     protected enum SwordState { Swinging, Returning, Guard }
     protected SwordState currentState;
 
+
+    //the player's sword
+    protected const string PLAYER_SWORD = "Player 1 sword";
+
     /////////////////////////////////////////////
     /// Fields
     /////////////////////////////////////////////
 
 
     //register for mouse events and get the rigidbody so as to be able to respond to them
-    public virtual void Setup()
+    public override void Setup()
     {
         Services.Events.Register<BothMouseButtonsEvent>(DetermineState);
         Services.Events.Register<KeyDirectionEvent>(MoveHands);
@@ -48,6 +52,7 @@ public class HandControl : MonoBehaviour
         handTransform = transform.Find(HANDS_TRANSFORM);
         newLoc = Input.mousePosition; //avoid a "jump" on the first frame of movement
         currentState = SwordState.Guard;
+        transform.Find(PLAYER_SWORD).GetComponent<SwordBehavior>().Setup();
     }
 
 
