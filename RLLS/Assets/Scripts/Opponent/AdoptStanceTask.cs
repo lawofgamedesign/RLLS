@@ -28,7 +28,7 @@
 
         public override void Tick()
         {
-            opponent.Rb.MovePosition(opponent.Rb.position + (MoveDirection() * opponent.MoveSpeed * Time.deltaTime)); 
+            opponent.Rb.AddForce(MoveDirection() * opponent.MoveSpeed * Time.deltaTime, ForceMode.VelocityChange); //MovePosition(opponent.Rb.position + (MoveDirection() * opponent.MoveSpeed * Time.deltaTime)); 
         }
 
 
