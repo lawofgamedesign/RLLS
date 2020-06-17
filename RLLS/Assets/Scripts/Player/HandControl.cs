@@ -20,10 +20,10 @@ public class HandControl : Person
     //register for mouse events and get the rigidbody so as to be able to respond to them
     public override void Setup()
     {
+        base.Setup();
         Services.Events.Register<BothMouseButtonsEvent>(SwordStateViaInput);
         Services.Events.Register<KeyDirectionEvent>(MoveHandsViaInput);
         Services.Events.Register<MouseEvent>(RotateHandsViaInput);
-        rb = GetComponent<Rigidbody>();
         handTransform = transform.Find(HANDS_TRANSFORM);
         currentState = SwordState.Guard;
         transform.Find(PLAYER_SWORD).GetComponent<SwordBehavior>().Setup();

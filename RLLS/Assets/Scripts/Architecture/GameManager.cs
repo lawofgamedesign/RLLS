@@ -3,20 +3,27 @@
 public class GameManager : MonoBehaviour {
 
 
-    private const string P1_HANDS = "Player 1";
+    /// <summary>
+    /// Fields
+    /// </summary>
+
+    private const string PLAYER = "Player 1";
     private const string OPPONENT_TAG = "Opponent";
+    private Person opponent;
 
 
 
     private void Start()
     {
-        Services.Events = new EventManager();
-        Services.Inputs = new InputManager();
-        Services.Tasks = new TaskManager();
         Services.Stance = new OpponentStances();
         Services.Stance.EstablishStances();
-        GameObject.Find(P1_HANDS).GetComponent<Person>().Setup();
-        GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<HandControl>().Setup();
+        Services.Events = new EventManager();
+        Services.Inputs = new InputManager();
+        Debug.Assert(Services.Inputs != null, "No input manager.");
+        Services.Tasks = new TaskManager();
+        GameObject.Find(PLAYER).GetComponent<Person>().Setup();
+        opponent = GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<Person>();
+        opponent.Setup();
     }
 
     //the only Update() permitted in the game! This calls everything that needs to act each frame.
@@ -25,6 +32,5 @@ public class GameManager : MonoBehaviour {
     {
         Services.Inputs.Tick();
         Services.Tasks.Tick();
-        GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<Opponent.TrainingDummyBehavior>().Tick();
     }
 }

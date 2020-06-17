@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public class TrainingDummyBehavior : OpponentBehavior
+    public class TrainingDummyBehavior : Person
     {
         /// <summary>
         /// Fields

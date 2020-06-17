@@ -17,6 +17,8 @@
     {
         if (Status == newStatus) return;
 
+        Status = newStatus;
+
         switch (newStatus)
         {
             case TaskStatus.Working:
