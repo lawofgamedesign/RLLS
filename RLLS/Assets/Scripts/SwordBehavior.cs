@@ -19,7 +19,7 @@ public abstract class SwordBehavior : MonoBehaviour
     //In Setup(), assign the contactParticle
     public abstract void Setup();
 
-    protected virtual void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionStay(Collision collision)
     {
         FireContactParticle(collision.GetContact(0).point);
     }
