@@ -8,7 +8,7 @@ public class OpponentStances
     /// </summary>
 
 
-    private Vector3 handWorldStartPos = new Vector3(0.0f, 0.0f, 2.0f);
+    private Vector3 handWorldStartPos = new Vector3(0.0f, 0.0f, 1.0f);
     private const float ARM_LENGTH = 1.5f; //the linear limit of the configurable joint that constrains hand movement
     private const float DIAG_ARM_LENGTH = 1.06f; //the hands' distance from the origin on any one axis when held in a diagonal position
 
@@ -32,7 +32,7 @@ public class OpponentStances
         Quaternion highLeftRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 45.0f));
         Quaternion highRightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, -45.0f));
         Quaternion extendedRot = Quaternion.Euler(new Vector3(-90.0f, 0.0f, 0.0f));
-            
+
         stances.Add(Stances.High, new HandPosition(high, highRot));
         stances.Add(Stances.Left, new HandPosition(left, leftRot));
         stances.Add(Stances.Right, new HandPosition(right, rightRot));

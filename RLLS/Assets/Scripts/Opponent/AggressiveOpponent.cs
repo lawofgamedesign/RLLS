@@ -19,7 +19,11 @@
         {
             base.Setup();
             transform.Find(OPPONENT_SWORD).GetComponent<SwordBehavior>().Setup();
-            Services.Tasks.AddTask(new AdoptStanceTask(OpponentStances.Stances.High, this));
+
+            AdoptStanceTask raiseTask = new AdoptStanceTask(OpponentStances.Stances.High, this);
+            raiseTask.Then(new StrikeTask(this));
+
+            Services.Tasks.AddTask(raiseTask);
         }
     }
 }

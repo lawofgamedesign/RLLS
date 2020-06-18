@@ -24,6 +24,8 @@ public abstract class Person : MonoBehaviour
     //hand rotation
     protected Quaternion deltaRotation;
     protected const float BASE_ROT_SPEED = 50.0f; //starting wrist rotation speed
+    protected float currentRotSpeed = BASE_ROT_SPEED;
+    public float CurrentRotSpeed { get; private set; }
     protected Vector3 baseRotation = new Vector3(0.0f, 0.0f, BASE_ROT_SPEED);
     protected Vector3 baseSwing = new Vector3(BASE_ROT_SPEED, 0.0f, 0.0f);
     protected Vector3 currentSwingVector = new Vector3(0.0f, 0.0f, 0.0f);
@@ -47,6 +49,7 @@ public abstract class Person : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Rb = rb;
         MoveSpeed = moveSpeed;
+        CurrentRotSpeed = currentRotSpeed;
     }
 
 
@@ -75,7 +78,6 @@ public abstract class Person : MonoBehaviour
     /// <returns>The rotation actually achieved within this unit of time.</returns>
     public Quaternion SwingOnCommand(Vector3 vector)
     {
-        deltaRotation = Quaternion.Euler(vector * Time.deltaTime);
-        return rb.rotation * deltaRotation;
+        return Quaternion.identity;
     }
 }

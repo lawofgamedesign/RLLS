@@ -12,6 +12,10 @@
         private readonly Person opponent;
 
 
+        private readonly float distTolerance = 0.1f; //in Unity units
+        private readonly float angleTolerance = 1.0f; //in degrees
+
+
 
         /// <summary>
         /// Constructor
@@ -28,17 +32,34 @@
 
         public override void Tick()
         {
-            opponent.Rb.AddForce(MoveDirection() * opponent.MoveSpeed * Time.deltaTime, ForceMode.VelocityChange); //MovePosition(opponent.Rb.position + (MoveDirection() * opponent.MoveSpeed * Time.deltaTime)); 
+            opponent.Rb.AddForce(MoveDirection() * opponent.MoveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+            opponent.Rb.MoveRotation(Quaternion.RotateTowards(opponent.Rb.rotation, Services.Stance.stances[destinationStance].handRotation,
+                opponent.CurrentRotSpeed * Time.deltaTime));
+            if (CheckTolerances()) SetStatus(TaskStatus.Success);
         }
 
 
-        protected Vector3 MoveDirection()
+        private Vector3 MoveDirection()
         {
             Debug.Assert(Services.Stance.stances != null, "No stances.");
             Debug.Assert(Services.Stance.stances[destinationStance] != null, "No intended stance.");
             Debug.Assert(opponent != null, "No opponent.");
             Debug.Assert(opponent.Rb != null, "No rigidbody.");
-            return Services.Stance.stances[destinationStance].worldPosition - opponent.Rb.position;
+            return (Services.Stance.stances[destinationStance].worldPosition - opponent.Rb.position).normalized;
+        }
+
+
+        private bool CheckTolerances()
+        {
+            if (Vector3.Distance(opponent.Rb.position, Services.Stance.stances[destinationStance].worldPosition) <= distTolerance)
+            {
+                if (Vector3.Angle(opponent.Rb.rotation.eulerAngles, Services.Stance.stances[destinationStance].handRotation.eulerAngles) <= angleTolerance)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
