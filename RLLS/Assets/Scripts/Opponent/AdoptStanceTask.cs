@@ -61,5 +61,14 @@
 
             return false;
         }
+
+
+        /// <summary>
+        /// If there's no established next thing to do, inform OpponentBehavior that the opponent needs to proceed.
+        /// </summary>
+        protected override void OnSuccess()
+        {
+            if (NextTask == null) Services.Events.Fire(new ReadyEvent());
+        }
     }
 }

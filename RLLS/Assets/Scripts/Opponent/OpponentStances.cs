@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class OpponentStances
@@ -27,10 +28,10 @@ public class OpponentStances
         Vector3 extended = handWorldStartPos; //since hands are Z-locked, the extended position is just the starting position
 
         Quaternion highRot = Quaternion.identity;
-        Quaternion leftRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 90.0f));
-        Quaternion rightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, -90.0f));
-        Quaternion highLeftRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 45.0f));
-        Quaternion highRightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, -45.0f));
+        Quaternion leftRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, -90.0f));
+        Quaternion rightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 90.0f));
+        Quaternion highLeftRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, -45.0f));
+        Quaternion highRightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 45.0f));
         Quaternion extendedRot = Quaternion.Euler(new Vector3(-90.0f, 0.0f, 0.0f));
 
         stances.Add(Stances.High, new HandPosition(high, highRot));
@@ -39,5 +40,12 @@ public class OpponentStances
         stances.Add(Stances.High_Left, new HandPosition(highLeft, highLeftRot));
         stances.Add(Stances.High_Right, new HandPosition(highRight, highRightRot));
         stances.Add(Stances.Extended, new HandPosition(extended, extendedRot));
+    }
+
+
+    public static Stances GetRandomStance()
+    {
+        int randomStance = UnityEngine.Random.Range(0, Enum.GetValues(typeof(Stances)).Length);
+        return (Stances)randomStance;
     }
 }

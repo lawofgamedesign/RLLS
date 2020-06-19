@@ -1,4 +1,6 @@
 ﻿namespace Opponent {
+    using System.Collections;
+    using System.Collections.Generic;
     using UnityEngine;
 
     public class OpponentBehavior : Person
@@ -32,8 +34,17 @@
             opponentObjName = gameObject.name;
             transform.Find(OPPONENT_SWORD).GetComponent<SwordBehavior>().Setup();
             Services.Events.Register<SwordContactEvent>(WithdrawSequence);
+            Services.Events.Register<ReadyEvent>(RandomAttack);
 
             StrikeSequence(OpponentStances.Stances.High);
+        }
+
+
+        protected void RandomAttack(global::Event e)
+        {
+            Debug.Assert(e.GetType() == typeof(ReadyEvent), "Non-ReadyEvent in RandomAttack().");
+    
+            StrikeSequence(OpponentStances.GetRandomStance());
         }
 
 
@@ -44,6 +55,8 @@
         /// <param name="newTask">The starting stance</param>
         protected void StrikeSequence(OpponentStances.Stances newStance)
         {
+            startStance = newStance;
+
             AdoptStanceTask stanceTask = new AdoptStanceTask(newStance, this);
             stanceTask.Then(new StrikeTask(this));
 
