@@ -7,7 +7,7 @@ public abstract class SwordBehavior : MonoBehaviour
     /// Fields
     /// </summary>
     protected ParticleSystem contactParticle; //each sword should specify its own particle system for particle to play when making contact
-
+    protected Rigidbody rb;
 
 
 
@@ -17,7 +17,17 @@ public abstract class SwordBehavior : MonoBehaviour
 
 
     //In Setup(), assign the contactParticle
-    public abstract void Setup();
+    public virtual void Setup()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+
+    protected virtual void OnCollisionEnter(Collision collision)
+    {
+        Services.Events.Fire(new SwordContactEvent(rb, collision));
+    }
+
 
     protected virtual void OnCollisionStay(Collision collision)
     {

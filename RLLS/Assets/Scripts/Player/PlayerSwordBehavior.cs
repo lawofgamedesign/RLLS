@@ -10,6 +10,7 @@ public class PlayerSwordBehavior : SwordBehavior
     /// </summary>
     public override void Setup()
     {
+        base.Setup();
         contactParticle = GameObject.Find(PLAYER_PARTICLE_NAME).GetComponent<ParticleSystem>();
     }
 }
