@@ -10,6 +10,7 @@
 /RLLS/[Ll]ogs/
 /[Mm]emoryCaptures/
 /RLLS/Packages/
+/RLLS/Assets/AssetStore/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

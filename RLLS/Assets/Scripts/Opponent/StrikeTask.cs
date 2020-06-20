@@ -23,7 +23,7 @@
         public StrikeTask(Person opponent)
         {
             this.opponent = opponent;
-            Services.Events.Register<SwordContactEvent>(DetectBlock);
+            Services.Events.Register<SwordContactEvent>(DetectContact);
         }
 
 
@@ -62,7 +62,7 @@
         }
 
 
-        private void DetectBlock(global::Event e)
+        private void DetectContact(global::Event e)
         {
             Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in DetectBlock().");
 
