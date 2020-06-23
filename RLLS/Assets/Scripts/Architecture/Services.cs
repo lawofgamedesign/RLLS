@@ -48,4 +48,16 @@ public static class Services
         }
         set { stance = value; }
     }
+
+
+    private static SpeedManager speed;
+    public static SpeedManager Speed
+    {
+        get
+        {
+            Debug.Assert(speed != null, "No speed manager.");
+            return speed;
+        }
+        set { speed = value; }
+    }
 }

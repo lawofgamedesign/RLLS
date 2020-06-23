@@ -32,20 +32,23 @@
 
         public override void Tick()
         {
-            opponent.Rb.AddForce(MoveDirection() * opponent.MoveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+            opponent.Rb.AddForce(ApplyMovement(MoveDirection()), ForceMode.VelocityChange);
             opponent.Rb.MoveRotation(Quaternion.RotateTowards(opponent.Rb.rotation, Services.Stance.stances[destinationStance].handRotation,
-                opponent.CurrentRotSpeed * Time.deltaTime));
+                opponent.RotSpeed * Services.Speed.OverallMultiplier * Time.deltaTime));
             if (CheckTolerances()) SetStatus(TaskStatus.Success);
         }
 
 
         private Vector3 MoveDirection()
         {
-            Debug.Assert(Services.Stance.stances != null, "No stances.");
-            Debug.Assert(Services.Stance.stances[destinationStance] != null, "No intended stance.");
-            Debug.Assert(opponent != null, "No opponent.");
-            Debug.Assert(opponent.Rb != null, "No rigidbody.");
             return (Services.Stance.stances[destinationStance].worldPosition - opponent.Rb.position).normalized;
+        }
+
+
+
+        protected Vector3 ApplyMovement(Vector3 dir)
+        {
+            return dir * opponent.MoveSpeed * Time.deltaTime * Services.Speed.OverallMultiplier;
         }
 
 

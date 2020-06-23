@@ -13,7 +13,7 @@ public class OpponentStances
     private const float ARM_LENGTH = 1.5f; //the linear limit of the configurable joint that constrains hand movement
     private const float DIAG_ARM_LENGTH = 1.06f; //the hands' distance from the origin on any one axis when held in a diagonal position
 
-    public enum Stances { High, Left, Right, High_Left, High_Right, Extended }
+    public enum Stances { High, Left, Right, High_Left, High_Right, Extended }  //IMPORTANT: Extended *must* be the last stance; see GetRandomStance(), below
 
     public Dictionary<Stances, HandPosition> stances = new Dictionary<Stances, HandPosition>();
 
@@ -43,9 +43,16 @@ public class OpponentStances
     }
 
 
+    /// <summary>
+    /// Returns a random stance, so that the opponent can behave unpredictably.
+    /// 
+    /// IMPORTANT: Enum.GetValues . . . .Length *-1* is used to exclude Extended. Otherwise the opponent will try to adopt the extended "stance"--which is to say, strike the player
+    /// with no ability for the player to block.
+    /// </summary>
+    /// <returns>A randomly chosen non-Extended stance.</returns>
     public static Stances GetRandomStance()
     {
-        int randomStance = UnityEngine.Random.Range(0, Enum.GetValues(typeof(Stances)).Length);
+        int randomStance = UnityEngine.Random.Range(0, Enum.GetValues(typeof(Stances)).Length - 1);
         return (Stances)randomStance;
     }
 }

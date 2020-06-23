@@ -19,8 +19,9 @@ public class GameManager : MonoBehaviour {
         Services.Stance.EstablishStances();
         Services.Events = new EventManager();
         Services.Inputs = new InputManager();
-        Debug.Assert(Services.Inputs != null, "No input manager.");
         Services.Tasks = new TaskManager();
+        Services.Speed = new SpeedManager();
+        Services.Speed.Setup();
         GameObject.Find(PLAYER).GetComponent<Person>().Setup();
         opponent = GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<Person>();
         opponent.Setup();

@@ -29,9 +29,9 @@
 
         public override void Tick()
         {
-            opponent.Rb.AddForce(MoveDirection() * opponent.MoveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+            opponent.Rb.AddForce(ApplyMovement(MoveDirection()), ForceMode.VelocityChange);
             opponent.Rb.MoveRotation(Quaternion.RotateTowards(opponent.Rb.rotation, Services.Stance.stances[OpponentStances.Stances.Extended].handRotation,
-                opponent.CurrentRotSpeed * Time.deltaTime));
+                opponent.RotSpeed * Services.Speed.OverallMultiplier * Time.deltaTime));
             if (CheckTolerances()) SetStatus(TaskStatus.Success);
         }
 
@@ -43,6 +43,13 @@
         private Vector3 MoveDirection()
         {
             return (Services.Stance.stances[OpponentStances.Stances.Extended].worldPosition - opponent.Rb.position).normalized;
+        }
+
+
+
+        protected Vector3 ApplyMovement(Vector3 dir)
+        {
+            return dir * opponent.MoveSpeed * Time.deltaTime * Services.Speed.OverallMultiplier;
         }
 
 

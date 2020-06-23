@@ -44,34 +44,40 @@ public class HandControl : Person
         switch (dir)
         {
             case InputManager.Directions.Up:
-                rb.AddForce(Vector3.up * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.up), ForceMode.VelocityChange);
                 break;
             case InputManager.Directions.Down:
-                rb.AddForce(Vector3.down * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.down), ForceMode.VelocityChange);
                 break;
             case InputManager.Directions.Left:
-                rb.AddForce(Vector3.left * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.left), ForceMode.VelocityChange);
                 break;
             case InputManager.Directions.Right:
-                rb.AddForce(Vector3.right * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.right), ForceMode.VelocityChange);
                 break;
             case InputManager.Directions.Diag_Up_Left:
-                rb.AddForce(Vector3.up * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
-                rb.AddForce(Vector3.left * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.up), ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.left), ForceMode.VelocityChange);
                 break;
             case InputManager.Directions.Diag_Up_Right:
-                rb.AddForce(Vector3.up * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
-                rb.AddForce(Vector3.right * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.up), ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.right), ForceMode.VelocityChange);
                 break;
             case InputManager.Directions.Diag_Down_Left:
-                rb.AddForce(Vector3.down * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
-                rb.AddForce(Vector3.left * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.down), ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.left), ForceMode.VelocityChange);
                 break;
             case InputManager.Directions.Diag_Down_Right:
-                rb.AddForce(Vector3.down * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
-                rb.AddForce(Vector3.right * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.down), ForceMode.VelocityChange);
+                rb.AddForce(ApplyMovement(Vector3.right), ForceMode.VelocityChange);
                 break;
         }
+    }
+
+
+    protected Vector3 ApplyMovement(Vector3 dir)
+    {
+        return dir * moveSpeed * Time.deltaTime * Services.Speed.OverallMultiplier;
     }
 
 
@@ -94,8 +100,8 @@ public class HandControl : Person
         {
 
             //set the amount of rotation for this frame
-            if (mouseEvent.LMB) { deltaRotation = Quaternion.Euler(baseRotation * Time.deltaTime); } //rotate left for LMB
-            else { deltaRotation = Quaternion.Euler(baseRotation * Time.deltaTime * -1.0f); } //rotate right for RMB
+            if (mouseEvent.LMB) { deltaRotation = Quaternion.Euler(baseRotation * Services.Speed.OverallMultiplier * Time.deltaTime); } //rotate left for LMB
+            else { deltaRotation = Quaternion.Euler(baseRotation * Services.Speed.OverallMultiplier * Time.deltaTime * -1.0f); } //rotate right for RMB
 
             //actually spin the hands
             rb.MoveRotation(rb.rotation * deltaRotation);

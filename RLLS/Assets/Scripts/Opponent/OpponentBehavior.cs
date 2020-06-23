@@ -77,7 +77,7 @@
             //make sure the contacting sword is this opponent's sword, not the player's sword, etc.
             if (contactEvent.rb.transform.parent.gameObject.name == opponentObjName)
             {
-                Services.Tasks.AddTask(new AdoptStanceTask(startStance, this));
+                Services.Tasks.AddTaskExclusive(new AdoptStanceTask(startStance, this));
             }
         }
     }

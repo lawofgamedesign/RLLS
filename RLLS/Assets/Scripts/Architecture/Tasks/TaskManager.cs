@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TaskManager
@@ -15,6 +16,12 @@ public class TaskManager
 
     public void Tick()
     {
+        if (tasks.Count > 1)
+        {
+            Time.timeScale = 0.1f;
+            foreach (Task task in tasks) Debug.Log(task.ToString());
+        }
+        else if (tasks.Count == 1) Time.timeScale = 1.0f;
         for (int i = tasks.Count - 1; i >= 0; --i)
         {
             Task task = tasks[i];
@@ -50,5 +57,24 @@ public class TaskManager
 
         tasks.RemoveAt(taskIndex);
         task.SetStatus(Task.TaskStatus.Detached);
+    }
+
+
+    /// <summary>
+    /// Try to add a task which must be the only running task of its type.
+    /// </summary>
+    /// <param name="newTask">The task to be added.</param>
+    /// <returns>True if the task is added, false otherwise.</returns>
+    public bool AddTaskExclusive(Task newTask)
+    {
+        Type type = newTask.GetType();
+
+        foreach(Task task in tasks)
+        {
+            if (task.GetType() == type) return false;
+        }
+
+        AddTask(newTask);
+        return true;
     }
 }
