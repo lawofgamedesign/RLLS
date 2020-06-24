@@ -18,10 +18,12 @@ public class GameManager : MonoBehaviour {
         Services.Stance = new OpponentStances();
         Services.Stance.EstablishStances();
         Services.Events = new EventManager();
-        Services.Inputs = new InputManager();
-        Services.Tasks = new TaskManager();
         Services.Speed = new SpeedManager();
         Services.Speed.Setup();
+        Services.UI = new UIManager();
+        Services.UI.Setup();
+        Services.Inputs = new InputManager();
+        Services.Tasks = new TaskManager();
         GameObject.Find(PLAYER).GetComponent<Person>().Setup();
         opponent = GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<Person>();
         opponent.Setup();

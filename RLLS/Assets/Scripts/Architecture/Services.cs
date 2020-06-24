@@ -60,4 +60,16 @@ public static class Services
         }
         set { speed = value; }
     }
+
+
+    private static UIManager uI;
+    public static UIManager UI
+    {
+        get
+        {
+            Debug.Assert(uI != null, "No UI Manager.");
+            return uI;
+        }
+        set { uI = value; }
+    }
 }

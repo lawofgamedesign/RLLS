@@ -4,13 +4,14 @@ public class SpeedManager
 {
     private float overallMultiplier = 1.0f;
     public float OverallMultiplier { get; private set; }
-    private float overallIncrement = 0.1f;
+    private float overallIncrement = 0.5f;
     private const string PLAYER_OBJ = "Player 1";
 
 
     public void Setup()
     {
         OverallMultiplier = overallMultiplier;
+        Services.Events.Fire(new NewSpeedEvent(OverallMultiplier));
         Services.Events.Register<SwordContactEvent>(IncreaseOveralMultiplier);
     }
 
@@ -24,6 +25,7 @@ public class SpeedManager
         if (swordEvent.rb.transform.parent.gameObject.name == PLAYER_OBJ)
         {
             OverallMultiplier += overallIncrement;
+            Services.Events.Fire(new NewSpeedEvent(OverallMultiplier));
         }
     }
 }
