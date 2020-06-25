@@ -2,44 +2,53 @@
 {
     using UnityEngine;
 
-    public class TrainingDummyBehavior : Person
+    public class TrainingDummyBehavior : OpponentBehavior
     {
+
+
+
+        protected override void ChooseStyle()
+        {
+            Services.Events.Register<KeypressEvent>(TrainingStrike);
+        }
+
+
         /// <summary>
-        /// Fields
+        /// The training dummy doesn't make the first move.
         /// </summary>
-
-        protected Vector3 handStartPos = new Vector3(0.0f, 0.0f, 1.0f);
-        private const string SWORD_OBJ = "Player 2 sword";
-
-        
-
-        public override void Setup()
+        protected override void MakeFirstMove()
         {
-            rb = GetComponent<Rigidbody>();
-            transform.Find(SWORD_OBJ).GetComponent<SwordBehavior>().Setup();
+            return;
         }
 
 
-        public void Tick()
+
+        protected void TrainingStrike(global::Event e)
         {
-            AutoStrike();
+            Debug.Assert(e.GetType() == typeof(KeypressEvent), "Non-KeypressEvent in TrainingStrike.");
+
+            StrikeSequence(OpponentStances.Stances.High_Left);
         }
 
 
-        protected void AutoStrike()
+
+        /// <summary>
+        /// This function has the opponent pull their sword back to the position it was in when they started the attack.
+        /// </summary>
+        /// <param name="e">A SwordContactEvent</param>
+        protected override void WithdrawSequence(global::Event e)
         {
-            if (Time.time <= 0.5f) return; //pause for the player to get oriented
-            if (Time.time <= 1.5f)
+            Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in WithdrawSequence().");
+
+            SwordContactEvent contactEvent = e as SwordContactEvent;
+
+            //make sure the contacting sword is this opponent's sword, not the player's sword, etc.
+            if (contactEvent.rb.transform.parent.gameObject.name == opponentObjName)
             {
-                rb.AddForce(Vector3.up * Time.deltaTime * moveSpeed, ForceMode.VelocityChange);
-            }
-            else if (Time.time < 2.5f) return; //pause for the player to get into position
-            else if (Time.time <= 4.0f)
-            {
-                rb.AddForce(Vector3.down * Time.deltaTime * moveSpeed, ForceMode.VelocityChange);
-                rb.MoveRotation(SwingOrReturn());
+                AdoptStanceTask withdrawTask = new AdoptStanceTask(startStance, this);
+                withdrawTask.Then(new AdoptStanceTask(OpponentStances.Stances.Neutral, this));
+                Services.Tasks.AddTaskExclusive(withdrawTask);
             }
         }
     }
-
 }

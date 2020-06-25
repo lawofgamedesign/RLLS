@@ -7,15 +7,19 @@ public class InputManager
     /////////////////////////////////////////////
 
     public enum Directions { Up, Down, Left, Right, Diag_Up_Left, Diag_Up_Right, Diag_Down_Left, Diag_Down_Right, None }
-    private bool upPressed;
-    private bool downPressed;
-    private bool leftPressed;
-    private bool rightPressed;
-    private Directions currentDir;
+    protected bool upPressed;
+    protected bool downPressed;
+    protected bool leftPressed;
+    protected bool rightPressed;
+    protected Directions currentDir;
 
 
-    private Vector3 lastFramePos = new Vector3(0.0f, 0.0f);
-    private Vector3 thisFramePos = new Vector3(0.0f, 0.0f);
+    protected Vector3 lastFramePos = new Vector3(0.0f, 0.0f);
+    protected Vector3 thisFramePos = new Vector3(0.0f, 0.0f);
+
+
+    //Keys used by the training manager, etc.
+    public enum UsefulKeys { Space }
 
 
 

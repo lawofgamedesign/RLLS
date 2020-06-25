@@ -13,9 +13,16 @@ public class OpponentStances
     private const float ARM_LENGTH = 1.5f; //the linear limit of the configurable joint that constrains hand movement
     private const float DIAG_ARM_LENGTH = 1.06f; //the hands' distance from the origin on any one axis when held in a diagonal position
 
-    public enum Stances { High, Left, Right, High_Left, High_Right, Extended }  //IMPORTANT: Extended *must* be the last stance; see GetRandomStance(), below
+    public enum Stances { High, Left, Right, High_Left, High_Right, Neutral, Extended }  //IMPORTANT: Neutral and Extended *must* be the last stances; see GetRandomStance(), below
 
     public Dictionary<Stances, HandPosition> stances = new Dictionary<Stances, HandPosition>();
+
+
+
+    /// <summary>
+    /// Functions
+    /// </summary>
+
 
 
     public void EstablishStances()
@@ -25,6 +32,7 @@ public class OpponentStances
         Vector3 right = handWorldStartPos + new Vector3(-ARM_LENGTH, 0.0f, 0.0f); //the opponent's right is in the negative X direction
         Vector3 highLeft = handWorldStartPos + new Vector3(DIAG_ARM_LENGTH, DIAG_ARM_LENGTH, 0.0f);
         Vector3 highRight = handWorldStartPos + new Vector3(-DIAG_ARM_LENGTH, DIAG_ARM_LENGTH, 0.0f);
+        Vector3 neutral = handWorldStartPos;
         Vector3 extended = handWorldStartPos; //since hands are Z-locked, the extended position is just the starting position
 
         Quaternion highRot = Quaternion.identity;
@@ -32,6 +40,7 @@ public class OpponentStances
         Quaternion rightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 90.0f));
         Quaternion highLeftRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, -45.0f));
         Quaternion highRightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 45.0f));
+        Quaternion neutralRot = Quaternion.identity;
         Quaternion extendedRot = Quaternion.Euler(new Vector3(-90.0f, 0.0f, 0.0f));
 
         stances.Add(Stances.High, new HandPosition(high, highRot));
@@ -39,20 +48,22 @@ public class OpponentStances
         stances.Add(Stances.Right, new HandPosition(right, rightRot));
         stances.Add(Stances.High_Left, new HandPosition(highLeft, highLeftRot));
         stances.Add(Stances.High_Right, new HandPosition(highRight, highRightRot));
+        stances.Add(Stances.Neutral, new HandPosition(neutral, neutralRot));
         stances.Add(Stances.Extended, new HandPosition(extended, extendedRot));
     }
 
 
     /// <summary>
-    /// Returns a random stance, so that the opponent can behave unpredictably.
+    /// Returns a random attack stance, so that the opponent can behave unpredictably.
     /// 
-    /// IMPORTANT: Enum.GetValues . . . .Length *-1* is used to exclude Extended. Otherwise the opponent will try to adopt the extended "stance"--which is to say, strike the player
+    /// IMPORTANT: Enum.GetValues . . . .Length *-2* is used to exclude Neutral and Extended. Otherwise the opponent will try to adopt stances which don't lead to an attack, which is not the
+    /// intended use of this function. To get those stances, call them specifically.
     /// with no ability for the player to block.
     /// </summary>
     /// <returns>A randomly chosen non-Extended stance.</returns>
     public static Stances GetRandomStance()
     {
-        int randomStance = UnityEngine.Random.Range(0, Enum.GetValues(typeof(Stances)).Length - 1);
+        int randomStance = UnityEngine.Random.Range(0, Enum.GetValues(typeof(Stances)).Length - 2);
         return (Stances)randomStance;
     }
 }

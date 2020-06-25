@@ -7,13 +7,13 @@ public class GameManager : MonoBehaviour {
     /// Fields
     /// </summary>
 
-    private const string PLAYER = "Player 1";
-    private const string OPPONENT_TAG = "Opponent";
-    private Person opponent;
+    protected const string PLAYER = "Player 1";
+    protected const string OPPONENT_TAG = "Opponent";
+    protected Person opponent;
 
 
 
-    private void Start()
+    protected virtual void Start()
     {
         Services.Stance = new OpponentStances();
         Services.Stance.EstablishStances();
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour {
 
     //the only Update() permitted in the game! This calls everything that needs to act each frame.
     //Other scripts are permitted to *re*act through subscribing to events, etc.
-    private void Update()
+    protected virtual void Update()
     {
         Services.Inputs.Tick();
         Services.Tasks.Tick();
