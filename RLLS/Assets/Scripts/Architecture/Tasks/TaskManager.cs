@@ -16,12 +16,6 @@ public class TaskManager
 
     public void Tick()
     {
-        if (tasks.Count > 1)
-        {
-            Time.timeScale = 0.1f;
-            foreach (Task task in tasks) Debug.Log(task.ToString());
-        }
-        else if (tasks.Count == 1) Time.timeScale = 1.0f;
         for (int i = tasks.Count - 1; i >= 0; --i)
         {
             Task task = tasks[i];
