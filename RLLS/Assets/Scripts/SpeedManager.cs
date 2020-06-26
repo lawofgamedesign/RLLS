@@ -6,6 +6,11 @@ public class SpeedManager
     public float OverallMultiplier { get; private set; }
     private float overallIncrement = 0.5f;
     private const string PLAYER_OBJ = "Player 1";
+    private const string OPPONENT_OBJ = "Player 2";
+    private const string OPPONENT_SWORD_OBJ = " sword";
+    private float vulnerableMultiplier = 3.0f;
+    protected const string STRIKE_MSG = "Strike\nnow!";
+    protected const string SPEED_UP_MSG = "Too slow\nto strike!";
 
 
     public void Setup()
@@ -22,10 +27,13 @@ public class SpeedManager
 
         SwordContactEvent swordEvent = e as SwordContactEvent;
 
-        if (swordEvent.rb.transform.parent.gameObject.name == PLAYER_OBJ)
+        if (swordEvent.rb.transform.parent.gameObject.name == PLAYER_OBJ && swordEvent.collision.collider.gameObject.name == OPPONENT_OBJ + OPPONENT_SWORD_OBJ)
         {
             OverallMultiplier += overallIncrement;
             Services.Events.Fire(new NewSpeedEvent(OverallMultiplier));
+
+            if (Services.Speed.OverallMultiplier >= vulnerableMultiplier) Services.UI.ChangeExplanatoryMessage(STRIKE_MSG);
         }
+        else if (swordEvent.collision.collider.gameObject.name.Contains(OPPONENT_OBJ)) Services.UI.ChangeExplanatoryMessage(SPEED_UP_MSG);
     }
 }
