@@ -16,6 +16,15 @@ public abstract class Person : MonoBehaviour
     protected const string HANDS_TRANSFORM = "Hands";
 
 
+    //the swordfighter's body, head, etc.
+    protected Rigidbody bodyRb;
+    protected Rigidbody headRb;
+    protected const string BODY_OBJ = " body";
+    protected const string HEAD_OBJ = " head";
+    protected float vulnerableSpeed = 3.0f;
+    protected const string STRIKE_MSG = "Strike\nnow!";
+
+
     //hand movement
     protected float moveSpeed = 10.0f;
     public float MoveSpeed { get; private set; }
@@ -43,10 +52,18 @@ public abstract class Person : MonoBehaviour
 
 
 
+    /// <summary>
+    /// Functions
+    /// </summary>
+
+
     public virtual void Setup()
     {
         rb = GetComponent<Rigidbody>();
         Rb = rb;
+        bodyRb = GameObject.Find(gameObject.name + BODY_OBJ).GetComponent<Rigidbody>();
+        headRb = GameObject.Find(gameObject.name + HEAD_OBJ).GetComponent<Rigidbody>();
+        Services.Events.Register<NewSpeedEvent>(BecomeVulnerable);
         MoveSpeed = moveSpeed;
         RotSpeed = BASE_ROT_SPEED;
     }
@@ -78,5 +95,21 @@ public abstract class Person : MonoBehaviour
     public Quaternion SwingOnCommand(Vector3 vector)
     {
         return Quaternion.identity;
+    }
+
+
+
+    protected void BecomeVulnerable(global::Event e)
+    {
+        Debug.Assert(e.GetType() == typeof(NewSpeedEvent), "Non-NewSpeedEvent in BecomeVulnerable");
+
+        NewSpeedEvent speedEvent = e as NewSpeedEvent;
+
+        if (speedEvent.newSpeed >= vulnerableSpeed)
+        {
+            bodyRb.isKinematic = false;
+            headRb.isKinematic = false;
+            Services.UI.ChangeExplanatoryMessage(STRIKE_MSG);
+        }
     }
 }
