@@ -8,14 +8,25 @@ public class OpponentStances
     /// Fields
     /// </summary>
 
-
+    
+    //used to position hands across stances
     private Vector3 handWorldStartPos = new Vector3(0.0f, 0.75f, 1.0f);
     private const float ARM_LENGTH = 1.5f; //the linear limit of the configurable joint that constrains hand movement
     private const float DIAG_ARM_LENGTH = 1.06f; //the hands' distance from the origin on any one axis when held in a diagonal position
 
+
+
+    /// <summary>
+    /// Stances used for attacking
+    /// </summary>
     public enum Stances { High, Left, Right, High_Left, High_Right, Neutral, Extended }  //IMPORTANT: Neutral and Extended *must* be the last stances; see GetRandomStance(), below
 
     public Dictionary<Stances, HandPosition> stances = new Dictionary<Stances, HandPosition>();
+
+
+
+    public enum Parries { High, Left, Right }
+    public Dictionary<Parries, HandPosition> parries = new Dictionary<Parries, HandPosition>();
 
 
 
@@ -53,14 +64,29 @@ public class OpponentStances
     }
 
 
+    public void EstablishParries()
+    {
+        Vector3 high = handWorldStartPos + new Vector3(0.6f, 1.0f, 0.0f);
+        Vector3 left = handWorldStartPos + new Vector3(0.75f, -0.5f, 0.0f);
+        Vector3 right = handWorldStartPos + new Vector3(-0.75f, -0.5f, 0.0f);
+
+        Quaternion highRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 75.0f));
+        Quaternion leftRot = Quaternion.identity;
+        Quaternion rightRot = Quaternion.identity;
+
+        parries.Add(Parries.High, new HandPosition(high, highRot));
+        parries.Add(Parries.Left, new HandPosition(left, leftRot));
+        parries.Add(Parries.Right, new HandPosition(right, rightRot));
+    }
+
+
     /// <summary>
     /// Returns a random attack stance, so that the opponent can behave unpredictably.
     /// 
     /// IMPORTANT: Enum.GetValues . . . .Length *-2* is used to exclude Neutral and Extended. Otherwise the opponent will try to adopt stances which don't lead to an attack, which is not the
     /// intended use of this function. To get those stances, call them specifically.
-    /// with no ability for the player to block.
     /// </summary>
-    /// <returns>A randomly chosen non-Extended stance.</returns>
+    /// <returns>A randomly chosen stance.</returns>
     public static Stances GetRandomStance()
     {
         int randomStance = UnityEngine.Random.Range(0, Enum.GetValues(typeof(Stances)).Length - 2);

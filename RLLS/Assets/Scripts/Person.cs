@@ -21,8 +21,6 @@ public abstract class Person : MonoBehaviour
     protected Rigidbody headRb;
     protected const string BODY_OBJ = " body";
     protected const string HEAD_OBJ = " head";
-    protected float vulnerableSpeed = 3.0f;
-    protected const string STRIKE_MSG = "Strike\nnow!";
 
 
     //hand movement
@@ -80,7 +78,10 @@ public abstract class Person : MonoBehaviour
         else if (currentState == SwordState.Returning) currentSwingVector = -1 * baseSwing;
         else Debug.Log("Incorrect SwordState in SwingOrReturn() " + currentState.ToString());
 
-        deltaRotation = Quaternion.Euler(currentSwingVector * Services.Speed.OverallMultiplier * Time.deltaTime);
+        float multiplier = Services.Speed.OverallMultiplier;
+        if (currentState == SwordState.Swinging) multiplier -= Services.Speed.StrikePenalty;
+
+        deltaRotation = Quaternion.Euler(currentSwingVector * multiplier * Time.deltaTime);
         return rb.rotation * deltaRotation;
     }
 
@@ -105,11 +106,10 @@ public abstract class Person : MonoBehaviour
 
         NewSpeedEvent speedEvent = e as NewSpeedEvent;
 
-        if (speedEvent.newSpeed >= vulnerableSpeed)
+        if (speedEvent.newSpeed >= Services.Speed.VulnerableMultiplier)
         {
             bodyRb.isKinematic = false;
             headRb.isKinematic = false;
-            Services.UI.ChangeExplanatoryMessage(STRIKE_MSG);
         }
     }
 }

@@ -33,6 +33,7 @@ public class InputManager
     {
         GetDirection();
         CheckBothMouseButtons();
+        CheckBothMouseButtonsUp();
         GetMouseState();
     }
 
@@ -82,9 +83,18 @@ public class InputManager
 
     /// <summary>
     /// If both mouse buttons are pressed (because either one is detected as *just* pressed while the other *is* pressed, to allow for non-frame-perfect inputs), send out an appropriate event.
+    /// 
+    /// The event only fires on the first frame both mouse buttons are pressed.
     /// </summary>
     protected void CheckBothMouseButtons()
     {
         if ((Input.GetMouseButtonDown(0) && Input.GetMouseButton(1)) || Input.GetMouseButton(0) && Input.GetMouseButtonDown(1)) Services.Events.Fire(new BothMouseButtonsEvent());
+    }
+
+
+
+    protected void CheckBothMouseButtonsUp()
+    {
+        if ((Input.GetMouseButtonUp(0) && !Input.GetMouseButton(1)) || !Input.GetMouseButton(0) && Input.GetMouseButtonUp(1)) Services.Events.Fire(new BothMouseButtonsUpEvent());
     }
 }

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
     {
         Services.Stance = new OpponentStances();
         Services.Stance.EstablishStances();
+        Services.Stance.EstablishParries();
         Services.Events = new EventManager();
         Services.Speed = new SpeedManager();
         Services.Speed.Setup();

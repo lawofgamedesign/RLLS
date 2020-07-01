@@ -113,15 +113,23 @@ public class HandControl : Person
     /// <summary>
     /// Decide whether the player is swinging the sword, or returning to guard.
     /// 
-    /// When a BothMouseButtonsEvent is detected, switch between those states.
+    /// When a BothMouseButtonsEvent is detected, switch between those states. In addition, send out an event so that the opponent can decide whether and how to respond.
     /// </summary>
     /// <param name="e">A BothMouseButtonsEvent.</param>
     protected virtual void SwordStateViaInput(global::Event e)
     {
         Debug.Assert(e.GetType() == typeof(BothMouseButtonsEvent), "Non-BothMouseButtonsEvent in SwordStateViaInput().");
 
-        if (currentState == SwordState.Swinging) currentState = SwordState.Returning;
-        else if (currentState == SwordState.Returning || currentState == SwordState.Guard) currentState = SwordState.Swinging;
+        if (currentState == SwordState.Swinging)
+        {
+            currentState = SwordState.Returning;
+            Services.Events.Fire(new WithdrawingEvent());
+        }
+        else if (currentState == SwordState.Returning || currentState == SwordState.Guard)
+        {
+            currentState = SwordState.Swinging;
+            Services.Events.Fire(new StrikingEvent());
+        }
     }
 }
 

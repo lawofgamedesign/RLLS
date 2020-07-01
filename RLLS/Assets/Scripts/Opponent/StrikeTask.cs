@@ -31,7 +31,7 @@
         {
             opponent.Rb.AddForce(ApplyMovement(MoveDirection()), ForceMode.VelocityChange);
             opponent.Rb.MoveRotation(Quaternion.RotateTowards(opponent.Rb.rotation, Services.Stance.stances[OpponentStances.Stances.Extended].handRotation,
-                opponent.RotSpeed * Services.Speed.OverallMultiplier * Time.deltaTime));
+                opponent.RotSpeed * (Services.Speed.OverallMultiplier - Services.Speed.StrikePenalty) * Time.deltaTime));
             if (CheckTolerances()) SetStatus(TaskStatus.Success);
         }
 
