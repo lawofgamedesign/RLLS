@@ -16,10 +16,6 @@ public class TaskManager
 
     public void Tick()
     {
-        if (tasks.Count > 1)
-        {
-            foreach (Task task in tasks) Debug.Log(task.ToString());
-        }
         for (int i = tasks.Count - 1; i >= 0; --i)
         {
             Task task = tasks[i];
@@ -74,5 +70,17 @@ public class TaskManager
 
         AddTask(newTask);
         return true;
+    }
+
+
+
+    public bool CheckForTaskOfType<T>()
+    {
+        foreach (Task task in tasks)
+        {
+            if (task.GetType() == typeof(T)) return true;
+        }
+
+        return false;
     }
 }

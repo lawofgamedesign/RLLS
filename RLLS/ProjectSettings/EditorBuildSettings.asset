@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Training.unity
     guid: d660b46fa989eb04987bde6c0b410957
+  - enabled: 1
+    path: Assets/Scenes/BlockRoom.unity
+    guid: 70090f97eed15214e9ec1f768e09a479
   m_configObjects: {}

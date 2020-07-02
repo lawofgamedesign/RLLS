@@ -30,8 +30,10 @@
         {
             Debug.Assert(e.GetType() == typeof(StrikingEvent), "Non-StrikingEvent in Parry.");
 
+            //don't attempt to parry if currently striking
+            if (Services.Tasks.CheckForTaskOfType<StrikeTask>()) return;
 
-            //Announce that the opponent is going to parry; important for AdoptStanceTast to know that it needs to abort so that a parrying stance can be adopted 
+            //Announce that the opponent is going to parry; important for AdoptStanceTask to know that it needs to abort so that a parrying stance can be adopted 
             Services.Events.Fire(new ParryEvent());
 
 

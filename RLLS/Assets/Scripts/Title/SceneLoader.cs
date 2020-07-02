@@ -6,7 +6,7 @@
 
     public class SceneLoader : MonoBehaviour
     {
-        private const string GAME_SCENE = "Test";
+        private const string GAME_SCENE = "BlockRoom";
         private const string TRAIN_SCENE = "Training";
 
 
