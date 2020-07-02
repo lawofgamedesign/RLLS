@@ -45,10 +45,6 @@ public abstract class Person : MonoBehaviour
     protected OpponentStances.Stances nextStance;
 
 
-    //the opponents's sword
-    protected const string OPPONENT_SWORD = "Player 2 sword";
-
-
 
     /// <summary>
     /// Functions
@@ -61,7 +57,6 @@ public abstract class Person : MonoBehaviour
         Rb = rb;
         bodyRb = GameObject.Find(gameObject.name + BODY_OBJ).GetComponent<Rigidbody>();
         headRb = GameObject.Find(gameObject.name + HEAD_OBJ).GetComponent<Rigidbody>();
-        Services.Events.Register<NewSpeedEvent>(BecomeVulnerable);
         MoveSpeed = moveSpeed;
         RotSpeed = BASE_ROT_SPEED;
     }
@@ -100,16 +95,9 @@ public abstract class Person : MonoBehaviour
 
 
 
-    protected void BecomeVulnerable(global::Event e)
+    public void BecomeVulnerable()
     {
-        Debug.Assert(e.GetType() == typeof(NewSpeedEvent), "Non-NewSpeedEvent in BecomeVulnerable");
-
-        NewSpeedEvent speedEvent = e as NewSpeedEvent;
-
-        if (speedEvent.newSpeed >= Services.Speed.VulnerableMultiplier)
-        {
-            bodyRb.isKinematic = false;
-            headRb.isKinematic = false;
-        }
+        bodyRb.isKinematic = false;
+        headRb.isKinematic = false;
     }
 }

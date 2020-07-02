@@ -160,6 +160,7 @@
             {
                 if (Vector3.Angle(opponent.Rb.rotation.eulerAngles, Services.Stance.stances[destinationStance].handRotation.eulerAngles) <= angleTolerance)
                 {
+                    Services.Swords.ChangeIntensity(SwordManager.Swords.Opponent, SwordManager.SwordIntensity.Full);
                     return true;
                 }
             }

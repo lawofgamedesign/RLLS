@@ -10,6 +10,15 @@ public abstract class SwordBehavior : MonoBehaviour
     protected Rigidbody rb;
 
 
+    //sword lighting & particles
+    protected Light swordGlow;
+    protected const string GLOW_OBJ = "Sword glow";
+    protected const float NORMAL_INTENSITY = 0.5f;
+    protected const float FULL_INTENSITY = 5.0f;
+
+    public SwordManager.SwordIntensity CurrentIntensity { get; private set; }
+
+
 
     /// <summary>
     /// Functions
@@ -20,6 +29,8 @@ public abstract class SwordBehavior : MonoBehaviour
     public virtual void Setup()
     {
         rb = GetComponent<Rigidbody>();
+        swordGlow = transform.Find(GLOW_OBJ).GetComponent<Light>();
+        CurrentIntensity = SwordManager.SwordIntensity.Normal;
     }
 
 
@@ -39,5 +50,13 @@ public abstract class SwordBehavior : MonoBehaviour
     {
         contactParticle.transform.SetPositionAndRotation(contactPoint, Quaternion.identity);
         contactParticle.Play();
+    }
+
+
+    public void ChangeIntensity(SwordManager.SwordIntensity newIntensity)
+    {
+        CurrentIntensity = newIntensity;
+
+        swordGlow.intensity = CurrentIntensity == SwordManager.SwordIntensity.Normal ? NORMAL_INTENSITY : FULL_INTENSITY;
     }
 }

@@ -8,9 +8,6 @@ public class HandControl : Person
     /////////////////////////////////////////////
 
 
-    //the player's sword
-    protected const string PLAYER_SWORD = "Player 1 sword";
-
 
     /////////////////////////////////////////////
     /// Fields
@@ -26,7 +23,6 @@ public class HandControl : Person
         Services.Events.Register<MouseEvent>(RotateHandsViaInput);
         handTransform = transform.Find(HANDS_TRANSFORM);
         currentState = SwordState.Guard;
-        transform.Find(PLAYER_SWORD).GetComponent<SwordBehavior>().Setup();
     }
 
 

@@ -72,4 +72,16 @@ public static class Services
         }
         set { uI = value; }
     }
+
+
+    private static SwordManager swords;
+    public static SwordManager Swords
+    {
+        get
+        {
+            Debug.Assert(swords != null, "No sword manager.");
+            return swords;
+        }
+        set { swords = value;  }
+    }
 }

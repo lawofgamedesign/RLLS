@@ -35,7 +35,6 @@
         {
             base.Setup();
             opponentObjName = gameObject.name;
-            transform.Find(OPPONENT_SWORD).GetComponent<SwordBehavior>().Setup();
             Services.Events.Register<SwordContactEvent>(WithdrawSequence);
 
             ChooseStyle();

@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour {
         GameObject.Find(PLAYER).GetComponent<Person>().Setup();
         opponent = GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<Person>();
         opponent.Setup();
+        Services.Swords = new SwordManager();
+        Services.Swords.Setup();
     }
 
     //the only Update() permitted in the game! This calls everything that needs to act each frame.
