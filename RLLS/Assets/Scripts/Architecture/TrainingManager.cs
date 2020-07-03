@@ -13,8 +13,9 @@ public class TrainingManager : GameManager
         Services.UI.Setup();
         Services.Inputs = new TrainingInputManager();
         Services.Tasks = new TaskManager();
-        GameObject.Find(PLAYER).GetComponent<Person>().Setup();
-        opponent = GameObject.FindGameObjectWithTag(OPPONENT_TAG).GetComponent<Person>();
-        opponent.Setup();
+        Services.Swordfighters = new SwordfighterManager();
+        Services.Swordfighters.Setup();
+        Services.Swordfighters.Player.Setup();
+        Services.Swordfighters.Opponent.Setup();
     }
 }

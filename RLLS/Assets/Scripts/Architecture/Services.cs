@@ -84,4 +84,16 @@ public static class Services
         }
         set { swords = value;  }
     }
+
+
+    private static SwordfighterManager swordfighters;
+    public static SwordfighterManager Swordfighters
+    {
+        get
+        {
+            Debug.Assert(swordfighters != null, "No swordfighter manager.");
+            return swordfighters;
+        }
+        set { swordfighters = value; }
+    }
 }

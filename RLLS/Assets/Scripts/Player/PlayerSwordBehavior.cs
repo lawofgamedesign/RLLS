@@ -22,7 +22,11 @@ public class PlayerSwordBehavior : SwordBehavior
 
     protected void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == attackPlane) Services.Swords.ChangeIntensity(SwordManager.Swords.Player, SwordManager.SwordIntensity.Full);
+        if (other.gameObject == attackPlane)
+        {
+            Services.Swords.ChangeIntensity(SwordManager.Swords.Player, SwordManager.SwordIntensity.Full);
+            Services.Swordfighters.SetVulnerability(Services.Swordfighters.Opponent, true);
+        }
     }
 
 

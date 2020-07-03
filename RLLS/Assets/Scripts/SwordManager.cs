@@ -13,6 +13,10 @@ public class SwordManager
     public const string OPPONENT_SWORD_OBJ = "Player 2 sword";
 
 
+
+    private const string SWORD_OBJ = "sword";
+
+
     public enum SwordIntensity { Normal, Full }
 
     public enum Swords { Player, Opponent }
@@ -50,5 +54,14 @@ public class SwordManager
 
         ChangeIntensity(Swords.Player, SwordIntensity.Normal);
         ChangeIntensity(Swords.Opponent, SwordIntensity.Normal);
+
+        SwordContactEvent contactEvent = e as SwordContactEvent;
+
+        if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ))
+        {
+            Services.Swordfighters.SetVulnerability(Services.Swordfighters.Player, false);
+            Services.Swordfighters.SetVulnerability(Services.Swordfighters.Opponent, false);
+        }
     }
+
 }

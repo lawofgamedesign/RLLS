@@ -116,12 +116,12 @@ public class HandControl : Person
     {
         Debug.Assert(e.GetType() == typeof(BothMouseButtonsEvent), "Non-BothMouseButtonsEvent in SwordStateViaInput().");
 
-        if (currentState == SwordState.Swinging)
+        if (currentState == SwordState.Swinging || currentState == SwordState.Guard)
         {
             currentState = SwordState.Returning;
             Services.Events.Fire(new WithdrawingEvent());
         }
-        else if (currentState == SwordState.Returning || currentState == SwordState.Guard)
+        else if (currentState == SwordState.Returning)
         {
             currentState = SwordState.Swinging;
             Services.Events.Fire(new StrikingEvent());

@@ -41,13 +41,14 @@ public class SpeedManager
             OverallMultiplier += overallIncrement;
             Services.Events.Fire(new NewSpeedEvent(OverallMultiplier));
 
-            if (Services.Speed.OverallMultiplier >= vulnerableMultiplier) Services.UI.ChangeExplanatoryMessage(STRIKE_MSG);
+            //if (Services.Speed.OverallMultiplier >= vulnerableMultiplier) Services.UI.ChangeExplanatoryMessage(STRIKE_MSG);
         }
-        else if (swordEvent.collision.collider.gameObject.name.Contains(OPPONENT_OBJ) &&
-                    Services.Speed.OverallMultiplier < vulnerableMultiplier) Services.UI.ChangeExplanatoryMessage(SPEED_UP_MSG);
-        else if (swordEvent.collision.collider.gameObject.name.Contains(OPPONENT_OBJ) &&
-                    Services.Speed.OverallMultiplier >= vulnerableMultiplier) Services.UI.ChangeExplanatoryMessage(SUCCESS_MSG);
-        else if ((swordEvent.collision.collider.gameObject.name == PLAYER_OBJ + BODY_OBJ) || (swordEvent.collision.collider.gameObject.name == PLAYER_OBJ + HEAD_OBJ) &&
-                    Services.Speed.OverallMultiplier >= vulnerableMultiplier) Services.UI.ChangeExplanatoryMessage(LOSE_MSG);
+        
+        //else if (swordEvent.collision.collider.gameObject.name.Contains(OPPONENT_OBJ) &&
+        //            Services.Speed.OverallMultiplier < vulnerableMultiplier) Services.UI.ChangeExplanatoryMessage(SPEED_UP_MSG);
+        //else if (swordEvent.collision.collider.gameObject.name.Contains(OPPONENT_OBJ) &&
+        //            Services.Speed.OverallMultiplier >= vulnerableMultiplier) Services.UI.ChangeExplanatoryMessage(SUCCESS_MSG);
+        //else if ((swordEvent.collision.collider.gameObject.name == PLAYER_OBJ + BODY_OBJ) || (swordEvent.collision.collider.gameObject.name == PLAYER_OBJ + HEAD_OBJ) &&
+        //            Services.Speed.OverallMultiplier >= vulnerableMultiplier) Services.UI.ChangeExplanatoryMessage(LOSE_MSG);
     }
 }
