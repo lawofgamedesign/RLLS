@@ -97,7 +97,6 @@ public abstract class Person : MonoBehaviour
 
     public void ChangeVulnerability(bool isVulnerable)
     {
-        Debug.Log("ChangeVulernability setting to " + isVulnerable);
         bodyRb.isKinematic = !isVulnerable; //set to opposite because vulnerable (true) == not kinematic (false), and vice versa
         headRb.isKinematic = !isVulnerable;
     }

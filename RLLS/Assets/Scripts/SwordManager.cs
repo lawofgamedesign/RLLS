@@ -30,7 +30,7 @@ public class SwordManager
         opponentSword = GameObject.Find(OPPONENT_SWORD_OBJ).GetComponent<OpponentSwordBehavior>();
         opponentSword.Setup();
 
-        Services.Events.Register<SwordContactEvent>(HandleParry);
+        //Services.Events.Register<SwordContactEvent>(HandleParry);
     }
 
 
@@ -44,24 +44,23 @@ public class SwordManager
     {
         if (sword == Swords.Player) playerSword.ChangeIntensity(intensity);
         else if (sword == Swords.Opponent) opponentSword.ChangeIntensity(intensity);
-        else Debug.Log("Attempting to change intensity of a non-existent sword: " + sword.ToString());
     }
 
 
-    private void HandleParry(global::Event e)
-    {
-        Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in HandleParry");
-
-        ChangeIntensity(Swords.Player, SwordIntensity.Normal);
-        ChangeIntensity(Swords.Opponent, SwordIntensity.Normal);
-
-        SwordContactEvent contactEvent = e as SwordContactEvent;
-
-        if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ))
-        {
-            Services.Swordfighters.SetVulnerability(Services.Swordfighters.Player, false);
-            Services.Swordfighters.SetVulnerability(Services.Swordfighters.Opponent, false);
-        }
-    }
+    //private void HandleParry(global::Event e)
+    //{
+    //    Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in HandleParry");
+    //
+    //    ChangeIntensity(Swords.Player, SwordIntensity.Normal);
+    //    ChangeIntensity(Swords.Opponent, SwordIntensity.Normal);
+    //
+    //    SwordContactEvent contactEvent = e as SwordContactEvent;
+    //
+    //    if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ))
+    //    {
+    //        Services.Swordfighters.SetVulnerability(Services.Swordfighters.Player, false);
+    //        Services.Swordfighters.SetVulnerability(Services.Swordfighters.Opponent, false);
+    //    }
+    //}
 
 }

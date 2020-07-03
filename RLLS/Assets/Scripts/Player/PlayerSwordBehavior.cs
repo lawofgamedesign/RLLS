@@ -18,17 +18,4 @@ public class PlayerSwordBehavior : SwordBehavior
         contactParticle = GameObject.Find(PLAYER_PARTICLE_NAME).GetComponent<ParticleSystem>();
         attackPlane = GameObject.Find(ATTACK_READY_PLANE);
     }
-
-
-    protected void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject == attackPlane)
-        {
-            Services.Swords.ChangeIntensity(SwordManager.Swords.Player, SwordManager.SwordIntensity.Full);
-            Services.Swordfighters.SetVulnerability(Services.Swordfighters.Opponent, true);
-        }
-    }
-
-
-
 }
