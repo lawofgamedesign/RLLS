@@ -6,7 +6,8 @@ public class SwordManager
     /// <summary>
     /// Swords
     /// </summary>
-    /// 
+     
+    public enum Swords { Player, Opponent }
     public SwordBehavior playerSword;
     public const string PLAYER_SWORD_OBJ = "Player 1 sword";
     public OpponentSwordBehavior opponentSword;
@@ -17,9 +18,14 @@ public class SwordManager
     private const string SWORD_OBJ = "sword";
 
 
+    //sword light intensity
     public enum SwordIntensity { Normal, Full }
 
-    public enum Swords { Player, Opponent }
+
+    //sword edge positions for the "blade" particles
+    public enum BladePositions { Forward, Backward }
+
+ 
 
 
     public void Setup()
@@ -44,6 +50,12 @@ public class SwordManager
     {
         if (sword == Swords.Player) playerSword.ChangeIntensity(intensity);
         else if (sword == Swords.Opponent) opponentSword.ChangeIntensity(intensity);
+    }
+
+
+    public void ReversePlayerEdge(BladePositions newPos)
+    {
+        playerSword.ChangeEdgePos(newPos);
     }
 
 
