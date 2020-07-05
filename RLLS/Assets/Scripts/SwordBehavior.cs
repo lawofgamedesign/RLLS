@@ -19,6 +19,15 @@ public abstract class SwordBehavior : MonoBehaviour
     public SwordManager.SwordIntensity CurrentIntensity { get; private set; }
 
 
+    //glowing blade edge
+    protected Transform edgePartices;
+    protected const string EDGE_OBJ = "Edge particles";
+    protected const float FORWARD_Z_POS = 0.66f;
+    protected const float BACKWARD_Z_POS = -1.0f;
+    protected Vector3 edgeForwardLocalPos = new Vector3(0.0f, -1.0f, FORWARD_Z_POS);
+    protected Vector3 edgeBackwardLocalPos = new Vector3(0.0f, -1.0f, BACKWARD_Z_POS);
+
+
 
     /// <summary>
     /// Functions
@@ -31,6 +40,7 @@ public abstract class SwordBehavior : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         swordGlow = transform.Find(GLOW_OBJ).GetComponent<Light>();
         CurrentIntensity = SwordManager.SwordIntensity.Normal;
+        edgePartices = transform.Find(EDGE_OBJ);
     }
 
 
@@ -58,5 +68,11 @@ public abstract class SwordBehavior : MonoBehaviour
         CurrentIntensity = newIntensity;
 
         swordGlow.intensity = CurrentIntensity == SwordManager.SwordIntensity.Normal ? NORMAL_INTENSITY : FULL_INTENSITY;
+    }
+
+
+    public void ChangeEdgePos(SwordManager.BladePositions newPos)
+    {
+        edgePartices.localPosition = newPos == SwordManager.BladePositions.Forward ? edgeForwardLocalPos : edgeBackwardLocalPos;
     }
 }

@@ -22,6 +22,11 @@ public class SwordManager
     public enum Swords { Player, Opponent }
 
 
+
+    //sword edge positions for the "blade" particles
+    public enum BladePositions { Forward, Backward }
+
+
     public void Setup()
     {
         playerSword = GameObject.Find(PLAYER_SWORD_OBJ).GetComponent<SwordBehavior>();
@@ -62,6 +67,13 @@ public class SwordManager
             Services.Swordfighters.SetVulnerability(Services.Swordfighters.Player, false);
             Services.Swordfighters.SetVulnerability(Services.Swordfighters.Opponent, false);
         }
+    }
+
+
+
+    public void ReversePlayerEdge(BladePositions newPos)
+    {
+        playerSword.ChangeEdgePos(newPos);
     }
 
 }

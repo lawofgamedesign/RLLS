@@ -21,12 +21,12 @@ public class GameManager : MonoBehaviour {
         Services.UI.Setup();
         Services.Inputs = new InputManager();
         Services.Tasks = new TaskManager();
+        Services.Swords = new SwordManager();
+        Services.Swords.Setup();
         Services.Swordfighters = new SwordfighterManager();
         Services.Swordfighters.Setup();
         Services.Swordfighters.Player.Setup();
         Services.Swordfighters.Opponent.Setup();
-        Services.Swords = new SwordManager();
-        Services.Swords.Setup();
     }
 
     //the only Update() permitted in the game! This calls everything that needs to act each frame.

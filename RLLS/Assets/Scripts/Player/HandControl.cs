@@ -23,6 +23,7 @@ public class HandControl : Person
         Services.Events.Register<MouseEvent>(RotateHandsViaInput);
         handTransform = transform.Find(HANDS_TRANSFORM);
         currentState = SwordState.Guard;
+        Services.Events.Register<BothMouseButtonsUpEvent>(BladeDirectionFeedback);
     }
 
 
@@ -127,6 +128,22 @@ public class HandControl : Person
             Services.Events.Fire(new StrikingEvent());
         }
     }
+
+
+    #region sword edge
+
+
+
+    protected void BladeDirectionFeedback(global::Event e)
+    {
+        Debug.Assert(e.GetType() == typeof(BothMouseButtonsUpEvent), "Non-BothMouseButtonsUpEvent in BladeDirectionFeedback");
+
+        if (currentState == SwordState.Swinging || currentState == SwordState.Guard) Services.Swords.ReversePlayerEdge(SwordManager.BladePositions.Backward);
+        else Services.Swords.ReversePlayerEdge(SwordManager.BladePositions.Forward);
+    }
+
+
+    #endregion
 }
 
 
