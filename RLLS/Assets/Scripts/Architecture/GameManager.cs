@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour {
 
 
     //used to end the game
-    private const float SLOWMO_SPEED = 0.1f;
     private const string SWORD_OBJ = "sword";
 
 
@@ -52,8 +51,6 @@ public class GameManager : MonoBehaviour {
         SwordContactEvent contactEvent = e as SwordContactEvent;
 
         if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ)) return; //do nothing if the swords clash
-
-        Time.timeScale = SLOWMO_SPEED;
 
         SlowmoTask slowTask = new SlowmoTask();
         slowTask.Then(new EndGameTask());

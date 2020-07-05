@@ -23,6 +23,7 @@ public class SpeedManager
     public void Setup()
     {
         OverallMultiplier = overallMultiplier;
+        Time.timeScale = OverallMultiplier; //make sure the game is actually at the advertised speed
         StrikePenalty = strikePenalty;
         VulnerableMultiplier = vulnerableMultiplier;
         Services.Events.Fire(new NewSpeedEvent(OverallMultiplier));
