@@ -8,6 +8,11 @@ public class GameManager : MonoBehaviour {
     /// </summary>
 
 
+    //used to end the game
+    private const float SLOWMO_SPEED = 0.1f;
+    private const string SWORD_OBJ = "sword";
+
+
 
     protected virtual void Start()
     {
@@ -27,6 +32,8 @@ public class GameManager : MonoBehaviour {
         Services.Swordfighters.Setup();
         Services.Swordfighters.Player.Setup();
         Services.Swordfighters.Opponent.Setup();
+
+        Services.Events.Register<SwordContactEvent>(DeclareWinner);
     }
 
     //the only Update() permitted in the game! This calls everything that needs to act each frame.
@@ -35,5 +42,23 @@ public class GameManager : MonoBehaviour {
     {
         Services.Inputs.Tick();
         Services.Tasks.Tick();
+    }
+
+
+    public void DeclareWinner(global::Event e)
+    {
+        Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in DeclareWinner");
+
+        SwordContactEvent contactEvent = e as SwordContactEvent;
+
+        if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ)) return; //do nothing if the swords clash
+
+        Time.timeScale = SLOWMO_SPEED;
+
+        SlowmoTask slowTask = new SlowmoTask();
+        slowTask.Then(new EndGameTask());
+        Services.Tasks.AddTaskExclusive(slowTask);
+
+        Services.Events.Unregister<SwordContactEvent>(DeclareWinner);
     }
 }

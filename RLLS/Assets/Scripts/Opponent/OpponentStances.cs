@@ -47,8 +47,8 @@ public class OpponentStances
         Vector3 extended = handWorldStartPos; //since hands are Z-locked, the extended position is just the starting position
 
         Quaternion highRot = Quaternion.identity;
-        Quaternion leftRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, -90.0f));
-        Quaternion rightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 90.0f));
+        Quaternion leftRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, -85.0f));
+        Quaternion rightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 85.0f));
         Quaternion highLeftRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, -45.0f));
         Quaternion highRightRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 45.0f));
         Quaternion neutralRot = Quaternion.identity;
