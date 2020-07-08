@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 
     //used to end the game
     private const string SWORD_OBJ = "sword";
+    private const string SCENERY_TAG = "Scenery";
+    private const string OPPONENT_OBJ = "Player 2";
 
 
 
@@ -48,9 +50,19 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in DeclareWinner");
 
+        Debug.Log("DeclareWinner called");
+
         SwordContactEvent contactEvent = e as SwordContactEvent;
 
-        if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ)) return; //do nothing if the swords clash
+        Debug.Log(contactEvent.collision.gameObject.name);
+        Debug.Log(Services.Swords.GetIntensity(SwordManager.Swords.Player).ToString());
+
+        if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ) ||
+            contactEvent.collision.gameObject.tag == SCENERY_TAG ||
+            (contactEvent.collision.gameObject.name.Contains (OPPONENT_OBJ) &&
+            Services.Swords.GetIntensity(SwordManager.Swords.Player) == SwordManager.SwordIntensity.Normal)) return; //do nothing if the sword didn't hit a swordfighter, or if the sword isn't ready to strike
+
+        Debug.Log("Ending the game");
 
         SlowmoTask slowTask = new SlowmoTask();
         slowTask.Then(new EndGameTask());

@@ -74,7 +74,7 @@ public class HandControl : Person
 
     protected Vector3 ApplyMovement(Vector3 dir)
     {
-        return dir * moveSpeed * Time.deltaTime * Services.Speed.OverallMultiplier;
+        return dir * moveSpeed * Time.deltaTime * Services.Speed.CurrentMultiplier;
     }
 
 
@@ -97,8 +97,8 @@ public class HandControl : Person
         {
 
             //set the amount of rotation for this frame
-            if (mouseEvent.LMB) { deltaRotation = Quaternion.Euler(baseRotation * Services.Speed.OverallMultiplier * Time.deltaTime); } //rotate left for LMB
-            else { deltaRotation = Quaternion.Euler(baseRotation * Services.Speed.OverallMultiplier * Time.deltaTime * -1.0f); } //rotate right for RMB
+            if (mouseEvent.LMB) { deltaRotation = Quaternion.Euler(baseRotation * Services.Speed.CurrentMultiplier * Time.deltaTime); } //rotate left for LMB
+            else { deltaRotation = Quaternion.Euler(baseRotation * Services.Speed.CurrentMultiplier * Time.deltaTime * -1.0f); } //rotate right for RMB
 
             //actually spin the hands
             rb.MoveRotation(rb.rotation * deltaRotation);

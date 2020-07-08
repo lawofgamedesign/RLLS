@@ -57,13 +57,13 @@ public class SwordManager
     {
         Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in HandleParry");
 
-        ChangeIntensity(Swords.Player, SwordIntensity.Normal);
-        ChangeIntensity(Swords.Opponent, SwordIntensity.Normal);
-
         SwordContactEvent contactEvent = e as SwordContactEvent;
 
-        if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ))
+        if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ)) //ignore contacts not with a sword--those aren't parries
         {
+            ChangeIntensity(Swords.Player, SwordIntensity.Normal);
+            ChangeIntensity(Swords.Opponent, SwordIntensity.Normal);
+
             Services.Swordfighters.SetVulnerability(Services.Swordfighters.Player, false);
             Services.Swordfighters.SetVulnerability(Services.Swordfighters.Opponent, false);
         }

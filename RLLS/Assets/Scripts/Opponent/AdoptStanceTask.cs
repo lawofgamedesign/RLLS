@@ -134,19 +134,19 @@
 
         protected Vector3 ApplyMovement(Vector3 dir)
         {
-            return dir * opponent.MoveSpeed * Time.deltaTime * Services.Speed.OverallMultiplier;
+            return dir * opponent.MoveSpeed * Time.deltaTime * Services.Speed.CurrentMultiplier;
         }
 
 
         private Quaternion RotateToStance()
         {
-            return Quaternion.RotateTowards(opponent.Rb.rotation, Services.Stance.stances[destinationStance].handRotation, opponent.RotSpeed * Services.Speed.OverallMultiplier * Time.deltaTime);
+            return Quaternion.RotateTowards(opponent.Rb.rotation, Services.Stance.stances[destinationStance].handRotation, opponent.RotSpeed * Services.Speed.CurrentMultiplier * Time.deltaTime);
         }
 
 
         private Quaternion RotateToParry()
         {
-            return Quaternion.RotateTowards(opponent.Rb.rotation, Services.Stance.parries[destinationParry].handRotation, opponent.RotSpeed * Services.Speed.OverallMultiplier * Time.deltaTime);
+            return Quaternion.RotateTowards(opponent.Rb.rotation, Services.Stance.parries[destinationParry].handRotation, opponent.RotSpeed * Services.Speed.CurrentMultiplier * Time.deltaTime);
         }
 
 

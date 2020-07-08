@@ -31,7 +31,7 @@
         {
             opponent.Rb.AddForce(ApplyMovement(MoveDirection()), ForceMode.VelocityChange);
             opponent.Rb.MoveRotation(Quaternion.RotateTowards(opponent.Rb.rotation, Services.Stance.stances[OpponentStances.Stances.Extended].handRotation,
-                opponent.RotSpeed * (Services.Speed.OverallMultiplier - Services.Speed.StrikePenalty) * Time.deltaTime));
+                opponent.RotSpeed * (Services.Speed.CurrentMultiplier - Services.Speed.StrikePenalty) * Time.deltaTime));
             if (CheckTolerances()) SetStatus(TaskStatus.Success);
         }
 
@@ -49,7 +49,7 @@
 
         protected Vector3 ApplyMovement(Vector3 dir)
         {
-            return dir * opponent.MoveSpeed * Time.deltaTime * Services.Speed.OverallMultiplier;
+            return dir * opponent.MoveSpeed * Time.deltaTime * Services.Speed.CurrentMultiplier;
         }
 
 

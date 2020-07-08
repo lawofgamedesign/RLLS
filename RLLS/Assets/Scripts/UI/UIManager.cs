@@ -11,6 +11,10 @@ public class UIManager
     private const string EXPLANATORY_TEXT_OBJ = "Multiplier explanation";
 
 
+    //number of characters to display when showing the speed to players
+    private const int SPEED_DISPLAY_MAX_CHARS = 3;
+
+
     public void Setup()
     {
         multiplierText = GameObject.Find(MULTIPLIER_TEXT_OBJ).GetComponent<TextMeshProUGUI>();
@@ -25,7 +29,10 @@ public class UIManager
 
         NewSpeedEvent speedEvent = e as NewSpeedEvent;
 
-        multiplierText.SetText(speedEvent.newSpeed.ToString());
+        //limit the speed to one sigfig
+        string displayedSpeed = speedEvent.newSpeed.ToString().Substring(0, SPEED_DISPLAY_MAX_CHARS);
+
+        multiplierText.SetText(displayedSpeed);
     }
 
 

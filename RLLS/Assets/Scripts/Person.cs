@@ -73,7 +73,7 @@ public abstract class Person : MonoBehaviour
         else if (currentState == SwordState.Returning) currentSwingVector = -1 * baseSwing;
         else Debug.Log("Incorrect SwordState in SwingOrReturn() " + currentState.ToString());
 
-        float multiplier = Services.Speed.OverallMultiplier;
+        float multiplier = Services.Speed.CurrentMultiplier;
         if (currentState == SwordState.Swinging) multiplier -= Services.Speed.StrikePenalty;
 
         deltaRotation = Quaternion.Euler(currentSwingVector * multiplier * Time.deltaTime);

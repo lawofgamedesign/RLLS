@@ -25,7 +25,7 @@ public class OpponentStances
 
 
 
-    public enum Parries { High, Left, Right }
+    public enum Parries { High, Left, Right, Center }
     public Dictionary<Parries, HandPosition> parries = new Dictionary<Parries, HandPosition>();
 
 
@@ -69,14 +69,17 @@ public class OpponentStances
         Vector3 high = handWorldStartPos + new Vector3(0.6f, 1.0f, 0.0f);
         Vector3 left = handWorldStartPos + new Vector3(0.75f, -0.5f, 0.0f);
         Vector3 right = handWorldStartPos + new Vector3(-0.75f, -0.5f, 0.0f);
+        Vector3 center = handWorldStartPos + new Vector3(0.0f, -0.65f, 0.0f);
 
         Quaternion highRot = Quaternion.Euler(new Vector3(0.0f, 0.0f, 75.0f));
         Quaternion leftRot = Quaternion.identity;
         Quaternion rightRot = Quaternion.identity;
+        Quaternion centerRot = Quaternion.identity;
 
         parries.Add(Parries.High, new HandPosition(high, highRot));
         parries.Add(Parries.Left, new HandPosition(left, leftRot));
         parries.Add(Parries.Right, new HandPosition(right, rightRot));
+        parries.Add(Parries.Center, new HandPosition(center, centerRot));
     }
 
 
