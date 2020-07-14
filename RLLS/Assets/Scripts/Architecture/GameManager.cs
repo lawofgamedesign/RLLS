@@ -52,9 +52,6 @@ public class GameManager : MonoBehaviour {
 
         SwordContactEvent contactEvent = e as SwordContactEvent;
 
-        Debug.Log(contactEvent.collision.gameObject.name);
-        Debug.Log(Services.Swords.GetIntensity(SwordManager.Swords.Player).ToString());
-
         if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ) ||
             contactEvent.collision.gameObject.tag == SCENERY_TAG ||
             (contactEvent.collision.gameObject.name.Contains (OPPONENT_OBJ) &&
