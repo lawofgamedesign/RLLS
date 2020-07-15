@@ -78,7 +78,7 @@ public class InputManager
 
         thisFramePos = Input.mousePosition;
 
-        Services.Events.Fire(new MouseEvent(thisFramePos, thisFramePos - lastFramePos, Input.GetMouseButton(0), Input.GetMouseButton(1)));
+        Services.Events.Fire(new MouseEvent(thisFramePos, thisFramePos - lastFramePos, Input.mouseScrollDelta, Input.GetMouseButton(0), Input.GetMouseButton(1)));
     }
 
     /// <summary>

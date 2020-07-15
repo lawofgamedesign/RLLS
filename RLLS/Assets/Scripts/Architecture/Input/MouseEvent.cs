@@ -28,6 +28,14 @@ public class MouseEvent : Event
     }
 
 
+    //mouse wheel status
+    private readonly float wheelDelta;
+    public float WheelDelta
+    {
+        get { return wheelDelta; }
+    }
+
+
     //how much the mouse moved from last frame to this one
     protected readonly Vector3 delta;
 
@@ -38,10 +46,11 @@ public class MouseEvent : Event
 
     
     //constructor
-    public MouseEvent(Vector3 pos, Vector3 delta, bool lmbPressed, bool rmbPressed)
+    public MouseEvent(Vector3 pos, Vector3 delta, Vector2 wheelDelta, bool lmbPressed, bool rmbPressed)
     {
         this.pos = pos;
         this.delta = delta;
+        this.wheelDelta = wheelDelta.y;
         this.lmbPressed = lmbPressed;
         this.rmbPressed = rmbPressed;
     }
