@@ -37,7 +37,11 @@ public class MouseEvent : Event
 
 
     //how much the mouse moved from last frame to this one
-    protected readonly Vector3 delta;
+    protected readonly Vector3 posDelta;
+    public Vector3 PosDelta
+    {
+        get { return posDelta; }
+    }
 
 
     /////////////////////////////////////////////
@@ -46,10 +50,10 @@ public class MouseEvent : Event
 
     
     //constructor
-    public MouseEvent(Vector3 pos, Vector3 delta, Vector2 wheelDelta, bool lmbPressed, bool rmbPressed)
+    public MouseEvent(Vector3 pos, Vector3 posDelta, Vector2 wheelDelta, bool lmbPressed, bool rmbPressed)
     {
         this.pos = pos;
-        this.delta = delta;
+        this.posDelta = posDelta;
         this.wheelDelta = wheelDelta.y;
         this.lmbPressed = lmbPressed;
         this.rmbPressed = rmbPressed;

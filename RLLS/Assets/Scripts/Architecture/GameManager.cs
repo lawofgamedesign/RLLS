@@ -25,7 +25,8 @@ public class GameManager : MonoBehaviour {
         Services.Speed.Setup();
         Services.UI = new UIManager();
         Services.UI.Setup();
-        Services.Inputs = new WheelInput();
+        Services.Inputs = new MouseInput();
+        Services.Inputs.Setup();
         Services.Tasks = new TaskManager();
         Services.Swords = new SwordManager();
         Services.Swords.Setup();

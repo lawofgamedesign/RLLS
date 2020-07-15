@@ -28,6 +28,17 @@ public class InputManager
     /// Functions
     /////////////////////////////////////////////
 
+
+    
+    //calibrate the mouse so that the system doesn't perceive a large jump to the starting position
+    public virtual void Setup()
+    {
+        thisFramePos = Input.mousePosition;
+    }
+
+
+
+
     ///Each frame, check for keyboard and mouse inputs
     public virtual void Tick()
     {
@@ -77,6 +88,9 @@ public class InputManager
         lastFramePos = thisFramePos;
 
         thisFramePos = Input.mousePosition;
+
+        Debug.Log("Position: " + Input.mousePosition);
+        Debug.Log("Delta: " + (thisFramePos - lastFramePos));
 
         Services.Events.Fire(new MouseEvent(thisFramePos, thisFramePos - lastFramePos, Input.mouseScrollDelta, Input.GetMouseButton(0), Input.GetMouseButton(1)));
     }
