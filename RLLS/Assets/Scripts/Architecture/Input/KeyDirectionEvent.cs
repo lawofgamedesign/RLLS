@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class KeyDirectionEvent : Event
+﻿public class KeyDirectionEvent : Event
 {
     //Directions
     

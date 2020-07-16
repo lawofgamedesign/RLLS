@@ -43,7 +43,7 @@ public class MouseControl : HandControl
 
             if (spinDelta != 0.0f)
             {
-                deltaRotation = Quaternion.Euler(baseRotation * spinDelta * WRIST_SPIN_SCALE * Time.deltaTime);
+                deltaRotation = Quaternion.Euler(baseRotation * spinDelta * WRIST_SPIN_SCALE * Time.deltaTime );
                 rb.MoveRotation(rb.rotation * deltaRotation);
             }
         }

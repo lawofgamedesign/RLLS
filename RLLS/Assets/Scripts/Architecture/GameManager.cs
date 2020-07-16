@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
         Services.Speed.Setup();
         Services.UI = new UIManager();
         Services.UI.Setup();
-        Services.Inputs = new MouseInput();
+        Services.Inputs = new KeyboardInput();
         Services.Inputs.Setup();
         Services.Tasks = new TaskManager();
         Services.Swords = new SwordManager();
@@ -52,9 +52,6 @@ public class GameManager : MonoBehaviour {
         Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in DeclareWinner");
 
         SwordContactEvent contactEvent = e as SwordContactEvent;
-
-        Debug.Log(contactEvent.collision.gameObject.name);
-        Debug.Log(Services.Swords.GetIntensity(SwordManager.Swords.Player).ToString());
 
         if (contactEvent.collision.gameObject.name.Contains(SWORD_OBJ) ||
             contactEvent.collision.gameObject.tag == SCENERY_TAG ||
