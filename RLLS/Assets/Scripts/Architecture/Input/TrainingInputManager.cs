@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TrainingInputManager : InputManager
+public class TrainingInputManager : KeyboardInput
 {
     
 
@@ -10,7 +10,7 @@ public class TrainingInputManager : InputManager
     public override void Tick()
     {
         base.Tick();
-        if (Input.GetKeyDown(KeyCode.Space)) Services.Events.Fire(new KeypressEvent(InputManager.UsefulKeys.Space));
+        if (Input.GetKeyDown(KeyCode.Return)) Services.Events.Fire(new KeypressEvent(InputManager.UsefulKeys.Enter));
     }
 
 }

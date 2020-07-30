@@ -19,7 +19,7 @@ public class InputManager
 
 
     //Keys used by the training manager, etc.
-    public enum UsefulKeys { Space }
+    public enum UsefulKeys { Space, Enter }
 
 
 
@@ -88,9 +88,6 @@ public class InputManager
         lastFramePos = thisFramePos;
 
         thisFramePos = Input.mousePosition;
-
-        Debug.Log("Position: " + Input.mousePosition);
-        Debug.Log("Delta: " + (thisFramePos - lastFramePos));
 
         Services.Events.Fire(new MouseEvent(thisFramePos, thisFramePos - lastFramePos, Input.mouseScrollDelta, Input.GetMouseButton(0), Input.GetMouseButton(1)));
     }

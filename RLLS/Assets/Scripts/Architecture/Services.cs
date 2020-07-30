@@ -96,4 +96,16 @@ public static class Services
         }
         set { swordfighters = value; }
     }
+
+
+    private static TrainingSequence trainer;
+    public static TrainingSequence Trainer
+    {
+        get
+        {
+            Debug.Assert(trainer != null, "No training sequence.");
+            return trainer;
+        }
+        set { trainer = value; }
+    }
 }

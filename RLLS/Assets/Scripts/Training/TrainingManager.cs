@@ -17,5 +17,16 @@ public class TrainingManager : GameManager
         Services.Swordfighters.Setup();
         Services.Swordfighters.Player.Setup();
         Services.Swordfighters.Opponent.Setup();
+        Services.Swords = new SwordManager();
+        Services.Swords.Setup();
+        Services.Trainer = new TrainingSequence();
+        Services.Trainer.Setup();
+    }
+
+
+    protected override void Update()
+    {
+        base.Update();
+        Services.Trainer.Tick();
     }
 }
