@@ -11,6 +11,7 @@ public class TrainingInputManager : KeyboardInput
     {
         base.Tick();
         if (Input.GetKeyDown(KeyCode.Return)) Services.Events.Fire(new KeypressEvent(InputManager.UsefulKeys.Enter));
+        if (Input.GetKeyDown(KeyCode.Space)) Services.Events.Fire(new KeypressEvent(InputManager.UsefulKeys.Space));
     }
 
 }

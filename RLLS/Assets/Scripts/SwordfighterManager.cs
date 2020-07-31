@@ -30,4 +30,14 @@ public class SwordfighterManager
     {
         swordfighter.ChangeVulnerability(isVulnerable);
     }
+
+
+    public void ChangeOpponentType<T>() where T : Person
+    {
+        Debug.Assert(typeof(T) != typeof(HandControl) && typeof(T) != typeof(MouseControl) && typeof(T) != typeof(KeyboardControl), "Trying to turn the opponent into a player.");
+
+        MonoBehaviour.Destroy(opponent);
+        opponent = GameObject.Find(OPPONENT_OBJ).AddComponent<T>();
+        opponent.Setup();
+    }
 }

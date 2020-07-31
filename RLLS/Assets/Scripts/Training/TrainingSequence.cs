@@ -77,7 +77,7 @@ public class TrainingSequence
         }
 
 
-        public override void CleanUp()
+        public override void OnExit()
         {
             Services.Events.Unregister<KeypressEvent>(ProgressText);
         }
@@ -177,23 +177,105 @@ public class TrainingSequence
 
         private void ProgressText(global::Event e)
         {
-            //the first statement is introductory; go on after enter is pressed
-            if (statements[statementIndex] == firstStatement) statementIndex++;
+            //the first statement is introductory; go on after enter is pressed. Same for the fourth, final statement
+            if (statements[statementIndex] == firstStatement || statements[statementIndex] == fourthStatement) statementIndex++;
 
             //the second and third statements handle themselves in GetDirectionPress and GetRotationPress, respectively
 
             if (statementIndex < statements.Count)
             {
-                if (statements[statementIndex] == secondStatement || statements[statementIndex] == thirdStatement) Context.SetTrainingText(statements[statementIndex] + tryNow);
+                if (statements[statementIndex] == secondStatement || statements[statementIndex] == thirdStatement)
+                {
+                    Context.SetTrainingText(statements[statementIndex] + tryNow);
+                }
                 else Context.SetTrainingText(statements[statementIndex] + pushToCont);
             }
+            else TransitionTo<BlockAndStrike>();
         }
 
 
-        public override void CleanUp()
+        public override void OnExit()
         {
             Services.Events.Unregister<KeypressEvent>(ProgressText);
             
+        }
+
+
+        protected class BlockAndStrike : FiniteStateMachine<TrainingSequence>.State
+        {
+            /// <summary>
+            /// Fields
+            /// </summary>
+            
+
+            //statements
+            private const string firstStatement = "You can use your sword to parry your opponent's strikes.";
+            private const string secondStatement = "When you tell it you are ready, the training dummy will take a swing at you.";
+            private const string thirdStatement = "Don't worry, the training dummy can't hurt you if you miss.";
+            private const string fourthStatement = "Just move your sword to block the training dummy's swing.";
+            private const string fifthStatement = "Now, press the Space bar to tell the training dummy to swing.";
+
+
+            private List<string> statements = new List<string>() { firstStatement, secondStatement, thirdStatement, fourthStatement, fifthStatement };
+            private int statementIndex = 0;
+
+            private const string pushToCont = "<size=16>\n\n(Press Enter to continue.)</size>";
+
+
+            //the training dummy now becomes active
+            private GameObject opponent;
+            private const string OPPONENT_OBJ = "Player 2";
+
+
+            /// <summary>
+            /// Functions
+            /// </summary>
+
+
+            public override void OnEnter()
+            {
+                Context.SetTrainingText(statements[statementIndex] + pushToCont);
+                Services.Events.Register<KeypressEvent>(ProgressText);
+            }
+
+
+            private void ProgressText(global::Event e)
+            {
+                KeypressEvent keyEvent = e as KeypressEvent;
+                if (keyEvent.key != InputManager.UsefulKeys.Enter) return; //only respond to Enter; the training dummy should respond to Space
+
+                //don't progress past the fifth statement until the player blocks successfully
+                if (statements[statementIndex] != fifthStatement) statementIndex++;
+
+                if (statementIndex < statements.Count)
+                {
+                    if (statements[statementIndex] == fifthStatement)
+                    {
+                        Context.SetTrainingText(statements[statementIndex]);
+                        ActivateOpponent();
+                    }
+                    else Context.SetTrainingText(statements[statementIndex] + pushToCont);
+                }
+                else TransitionTo<BlockAndStrike>();
+            }
+
+
+            private void ActivateOpponent()
+            {
+                Services.Swordfighters.ChangeOpponentType<Opponent.TrainingDummyBehavior>();
+            }
+
+
+            private void CheckForParry(global::Event e)
+            {
+
+            }
+
+
+            public override void OnExit()
+            {
+                Services.Events.Unregister<KeypressEvent>(ProgressText);
+            }
         }
     }
 }
