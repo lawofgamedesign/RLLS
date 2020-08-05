@@ -50,5 +50,15 @@
                 Services.Tasks.AddTaskExclusive(withdrawTask);
             }
         }
+
+
+        /// <summary>
+        /// During the training sequence, the training dummy activates, and then returns to a passive state by destroying this component. This component unregisters itself for events upon destruction, so that the
+        /// training dummy can actually be passive. Otherwise, the training dummy will keep swinging on keypress . . . even though this component appears to have been destroyed!
+        /// </summary>
+        protected void OnDestroy()
+        {
+            Services.Events.Unregister<KeypressEvent>(TrainingStrike);
+        }
     }
 }

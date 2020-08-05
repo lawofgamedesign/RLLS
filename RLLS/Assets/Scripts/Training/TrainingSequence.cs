@@ -190,7 +190,7 @@ public class TrainingSequence
                 }
                 else Context.SetTrainingText(statements[statementIndex] + pushToCont);
             }
-            else TransitionTo<BlockAndStrike>();
+            else TransitionTo<Block>();
         }
 
 
@@ -201,7 +201,7 @@ public class TrainingSequence
         }
 
 
-        protected class BlockAndStrike : FiniteStateMachine<TrainingSequence>.State
+        protected class Block : FiniteStateMachine<TrainingSequence>.State
         {
             /// <summary>
             /// Fields
@@ -214,6 +214,7 @@ public class TrainingSequence
             private const string thirdStatement = "Don't worry, the training dummy can't hurt you if you miss.";
             private const string fourthStatement = "Just move your sword to block the training dummy's swing.";
             private const string fifthStatement = "Now, press the Space bar to tell the training dummy to swing.";
+            private const string retryStatement = "Oops! Press the Space bar again, and try to block the training dummy's swing.";
 
 
             private List<string> statements = new List<string>() { firstStatement, secondStatement, thirdStatement, fourthStatement, fifthStatement };
@@ -225,6 +226,14 @@ public class TrainingSequence
             //the training dummy now becomes active
             private GameObject opponent;
             private const string OPPONENT_OBJ = "Player 2";
+
+
+            //the player, to see if a parry was successful
+            private const string PLAYER_OBJ = "Player 1";
+
+
+            //sword objects, to see if a parry was successful
+            private const string SWORD_OBJ = " sword";
 
 
             /// <summary>
@@ -253,10 +262,11 @@ public class TrainingSequence
                     {
                         Context.SetTrainingText(statements[statementIndex]);
                         ActivateOpponent();
+                        Services.Events.Register<SwordContactEvent>(ManageSwordContact);
                     }
                     else Context.SetTrainingText(statements[statementIndex] + pushToCont);
                 }
-                else TransitionTo<BlockAndStrike>();
+                else TransitionTo<Block>();
             }
 
 
@@ -265,17 +275,42 @@ public class TrainingSequence
                 Services.Swordfighters.ChangeOpponentType<Opponent.TrainingDummyBehavior>();
             }
 
-
-            private void CheckForParry(global::Event e)
+            private void DeactiveOpponent()
             {
+                Services.Swordfighters.ChangeOpponentType<Opponent.PassiveOpponent>();
+            }
 
+
+            private void ManageSwordContact(global::Event e)
+            {
+                Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in ManageSwordContact.");
+
+                SwordContactEvent contactEvent = e as SwordContactEvent;
+                Debug.Log("Sending sword: " + contactEvent.rb.gameObject.name + ", contacted sword: " + contactEvent.collision.gameObject.name);
+                if ((contactEvent.rb.gameObject.name == PLAYER_OBJ + SWORD_OBJ && contactEvent.collision.gameObject.name == OPPONENT_OBJ + SWORD_OBJ) ||
+                    (contactEvent.rb.gameObject.name == OPPONENT_OBJ + SWORD_OBJ && contactEvent.collision.gameObject.name == PLAYER_OBJ + SWORD_OBJ))
+                {
+                    Services.Events.Unregister<SwordContactEvent>(ManageSwordContact); //immediately stop listening for events, so as not to process the same parry twice
+                    DeactiveOpponent();
+                    TransitionTo<Strike>();
+                } else
+                {
+                    Context.SetTrainingText(retryStatement);
+                }
             }
 
 
             public override void OnExit()
             {
                 Services.Events.Unregister<KeypressEvent>(ProgressText);
+                Services.Events.Unregister<SwordContactEvent>(ManageSwordContact);
             }
+        }
+
+
+        protected class Strike : FiniteStateMachine<TrainingSequence>.State
+        {
+
         }
     }
 }
