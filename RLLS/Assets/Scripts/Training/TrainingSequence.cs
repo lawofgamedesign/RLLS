@@ -70,6 +70,12 @@ public class TrainingSequence
 
         private void ProgressText(global::Event e)
         {
+            Debug.Assert(e.GetType() == typeof(KeypressEvent), "Non-KeypressEvent in ProgressText.");
+
+
+            KeypressEvent keyEvent = e as KeypressEvent;
+            if (keyEvent.key != InputManager.UsefulKeys.Enter) return; //only respond to Enter
+
             statementIndex++;
 
             if (statementIndex < statements.Count) Context.SetTrainingText(statements[statementIndex] + pushToCont);
@@ -177,6 +183,12 @@ public class TrainingSequence
 
         private void ProgressText(global::Event e)
         {
+            Debug.Assert(e.GetType() == typeof(KeypressEvent), "Non-KeypressEvent in ProgressText.");
+
+
+            KeypressEvent keyEvent = e as KeypressEvent;
+            if (keyEvent.key != InputManager.UsefulKeys.Enter) return; //only respond to Enter
+
             //the first statement is introductory; go on after enter is pressed. Same for the fourth, final statement
             if (statements[statementIndex] == firstStatement || statements[statementIndex] == fourthStatement) statementIndex++;
 
@@ -250,6 +262,8 @@ public class TrainingSequence
 
             private void ProgressText(global::Event e)
             {
+                Debug.Assert(e.GetType() == typeof(KeypressEvent), "Non-KeypressEvent in ProgressText.");
+
                 KeypressEvent keyEvent = e as KeypressEvent;
                 if (keyEvent.key != InputManager.UsefulKeys.Enter) return; //only respond to Enter; the training dummy should respond to Space
 
@@ -286,7 +300,7 @@ public class TrainingSequence
                 Debug.Assert(e.GetType() == typeof(SwordContactEvent), "Non-SwordContactEvent in ManageSwordContact.");
 
                 SwordContactEvent contactEvent = e as SwordContactEvent;
-                Debug.Log("Sending sword: " + contactEvent.rb.gameObject.name + ", contacted sword: " + contactEvent.collision.gameObject.name);
+               
                 if ((contactEvent.rb.gameObject.name == PLAYER_OBJ + SWORD_OBJ && contactEvent.collision.gameObject.name == OPPONENT_OBJ + SWORD_OBJ) ||
                     (contactEvent.rb.gameObject.name == OPPONENT_OBJ + SWORD_OBJ && contactEvent.collision.gameObject.name == PLAYER_OBJ + SWORD_OBJ))
                 {
@@ -310,7 +324,83 @@ public class TrainingSequence
 
         protected class Strike : FiniteStateMachine<TrainingSequence>.State
         {
+            /// <summary>
+            /// Fields
+            /// </summary>
 
+
+            //statements
+            private const string firstStatement = "Now that you know how to defend, let's learn how to attack.";
+            private const string secondStatement = "Before you swing, you have to wind up.";
+            private const string thirdStatement = "To wind up, pull your sword back with the J key.";
+            private const string fourthStatement = "Great!";
+            private const string fifthStatement = "As you can see, when you wind up your magical space sword glows brightly.";
+            private const string sixthStatement = "Now, swing forward and hit the training dummy!";
+
+
+
+            private List<string> statements = new List<string>() { firstStatement, secondStatement, thirdStatement, fourthStatement };
+            private int statementIndex = 0;
+
+            private const string pushToCont = "<size=16>\n\n(Press Enter to continue.)</size>";
+            private const string tryNow = "\n\nTry it now.";
+
+
+            //player attack plane, so the player can wind up
+            private const string PLAYER_ATTACK_PLANE_OBJ = "Player attack plane";
+            private const string SCENE_OBJ = "Scene";
+
+
+
+
+            /// <summary>
+            /// Functions
+            /// </summary>
+
+
+            public override void OnEnter()
+            {
+                Context.SetTrainingText(statements[statementIndex] + pushToCont);
+                Services.Events.Register<KeypressEvent>(ProgressText);
+            }
+
+
+            private void ProgressText(global::Event e)
+            {
+                Debug.Log(statementIndex);
+                Debug.Assert(e.GetType() == typeof(KeypressEvent), "Non-KeypressEvent in ProgressText.");
+
+                KeypressEvent keyEvent = e as KeypressEvent;
+                if (keyEvent.key != InputManager.UsefulKeys.Enter) return; //only respond to Enter
+
+                if (statements[statementIndex] != thirdStatement || statements[statementIndex] != fourthStatement ) statementIndex++;
+
+                if (statementIndex < statements.Count)
+                {
+                    if (statements[statementIndex] == thirdStatement)
+                    {
+                        GameObject.Find(SCENE_OBJ).transform.Find(PLAYER_ATTACK_PLANE_OBJ).gameObject.SetActive(true);
+                        Services.Events.Register<WindupEvent>(DetectWindup);
+                        Context.SetTrainingText(statements[statementIndex] + tryNow);
+                    }
+                    else Context.SetTrainingText(statements[statementIndex] + pushToCont);
+                }
+                else Debug.Log("statementIndex too high: " + statementIndex);
+            }
+
+
+            private void DetectWindup(global::Event e)
+            {
+                statementIndex++;
+                Services.Events.Fire(new KeypressEvent(InputManager.UsefulKeys.Enter)); //get ProgressText to listen
+                Services.Events.Unregister<WindupEvent>(DetectWindup);
+            }
+
+
+            public override void OnExit()
+            {
+                Services.Events.Unregister<KeypressEvent>(ProgressText);
+            }
         }
     }
 }

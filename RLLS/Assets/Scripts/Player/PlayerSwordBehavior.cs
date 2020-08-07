@@ -7,6 +7,7 @@ public class PlayerSwordBehavior : SwordBehavior
 
     private GameObject attackPlane;
     private const string ATTACK_READY_PLANE = "Player attack plane";
+    private const string SCENE_OBJ = "Scene";
 
 
     /// <summary>
@@ -16,7 +17,7 @@ public class PlayerSwordBehavior : SwordBehavior
     {
         base.Setup();
         contactParticle = GameObject.Find(PLAYER_PARTICLE_NAME).GetComponent<ParticleSystem>();
-        attackPlane = GameObject.Find(ATTACK_READY_PLANE);
+        attackPlane = GameObject.Find(SCENE_OBJ).transform.Find(ATTACK_READY_PLANE).gameObject; //find the attack plane even if it's currently shut off
     }
 
 
@@ -26,6 +27,7 @@ public class PlayerSwordBehavior : SwordBehavior
         {
             Services.Swords.ChangeIntensity(SwordManager.Swords.Player, SwordManager.SwordIntensity.Full);
             Services.Swordfighters.SetVulnerability(Services.Swordfighters.Opponent, true);
+            Services.Events.Fire(new WindupEvent()); //used by the training sequence to detect that the player has figured out how to wind up
         }
     }
 
